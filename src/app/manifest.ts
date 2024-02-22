@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
 
 const manifest = (): MetadataRoute.Manifest => ({
-  short_name: 'nextarter-chakra',
-  name: 'Next.js App Template',
+  short_name: 'Phylogeny Explorer',
+  name: 'Phylogeny Explorer',
   lang: 'en',
   start_url: '/',
   background_color: '#FFFFFF',
