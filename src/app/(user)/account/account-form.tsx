@@ -1,29 +1,41 @@
 'use client';
 
-import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react';
+import {
+  Avatar,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+} from '@chakra-ui/react';
 import type { User } from '@supabase/auth-helpers-nextjs';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 
 import type { Database } from '~/types/supabase';
 
-interface Props {
-  user: User | null;
-  fullName?: string | null;
+interface Props extends User {
+  full_name?: string;
+  avatar_url?: string;
 }
 
-export default function AccountForm({ user, fullName }: Props) {
+export default function AccountForm({
+  id,
+  email,
+  full_name,
+  avatar_url,
+}: Props) {
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
-  const [fullname, setFullname] = useState(fullName);
+  const [fullname, setFullname] = useState(full_name);
 
   const updateProfile = async () => {
     try {
       setLoading(true);
 
       const { error } = await supabase.from('profiles').upsert({
-        id: user?.id as string,
-        full_name: fullName,
+        id: id as string,
+        full_name: fullname,
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
@@ -37,9 +49,10 @@ export default function AccountForm({ user, fullName }: Props) {
 
   return (
     <Stack>
+      {avatar_url && <Avatar size="xl" src={avatar_url} name={full_name} />}
       <FormControl>
         <FormLabel>Email</FormLabel>
-        <Input id="email" type="text" value={user?.email} disabled />
+        <Input id="email" type="text" value={email} disabled />
       </FormControl>
       <FormControl>
         <FormLabel>Full Name</FormLabel>

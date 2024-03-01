@@ -12,4 +12,7 @@ module.exports = withPWA({
   eslint: {
     dirs: ['src'],
   },
+  images: {
+    domains: ['lh3.googleusercontent.com'],
+  },
 });

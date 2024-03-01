@@ -12,9 +12,13 @@ export default async function Account() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user) {
+    return null;
+  }
+
   const { data, error, status } = await supabase
     .from('profiles')
-    .select(`full_name`)
+    .select('full_name, avatar_url')
     .eq('id', user?.id || '')
     .single();
 
@@ -22,5 +26,11 @@ export default async function Account() {
     throw new Error(error.message);
   }
 
-  return <AccountForm user={user} fullName={data?.full_name} />;
+  const profile = {
+    ...user,
+    full_name: data?.full_name || '',
+    avatar_url: data?.avatar_url || '',
+  };
+
+  return <AccountForm {...profile} />;
 }
