@@ -13,6 +13,6 @@ module.exports = withPWA({
     dirs: ['src'],
   },
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: ['lh3.googleusercontent.com', 'upload.wikimedia.org'],
   },
 });
