@@ -8,6 +8,10 @@ const ICONS = [
     url: 'https://www.facebook.com/groups/phylogenyexplorerdevelopment/',
   },
   {
+    platform: Social.LINKEDIN,
+    url: 'https://www.linkedin.com/company/phylogeny-explorer-project/',
+  },
+  {
     platform: Social.YOUTUBE,
     url: 'https://www.youtube.com/playlist?list=PLXJ4dsU0oGMLnubJLPuw0dzD0AvAHAotW',
   },

@@ -1,4 +1,5 @@
-import { ListItem, OrderedList, Text } from '@chakra-ui/react';
+import { Link, ListItem, OrderedList, Text } from '@chakra-ui/react';
+import type { LinkProps } from '@chakra-ui/react';
 import type { Options } from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
 
@@ -12,6 +13,9 @@ const components = {
     </OrderedList>
   ),
   li: ListItem,
+  a: (props: LinkProps) => (
+    <Link {...props} isExternal color="teal.600" textDecoration="underline" />
+  ),
 };
 
 const Markdown = ({ children }: Options) => (

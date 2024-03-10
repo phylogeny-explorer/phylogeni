@@ -13,7 +13,7 @@ export const sections = [
       'Phylogeny concerns the evolutionary history and development of organisms, how they diverge and evolve from each other, and the relationships between them.',
     image:
       'https://upload.wikimedia.org/wikipedia/commons/1/19/Phylogenetic_Tree_of_Life.png',
-    background: 'teal.800',
+    background: 'teal',
   },
   {
     id: 'about',
