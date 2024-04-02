@@ -15,4 +15,10 @@ module.exports = withPWA({
   images: {
     domains: ['lh3.googleusercontent.com', 'upload.wikimedia.org'],
   },
+  headers: [
+    {
+      key: 'Access-Control-Allow-Origin',
+      value: process.env.NEXT_PUBLIC_APP_URL,
+    },
+  ],
 });
