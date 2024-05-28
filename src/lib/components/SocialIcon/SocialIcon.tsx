@@ -1,9 +1,9 @@
 import { Icon, IconButton } from '@chakra-ui/react';
 import {
-  RiFacebookBoxFill,
+  RiFacebookCircleFill,
   RiGithubFill,
-  RiInstagramFill,
-  RiLinkedinFill,
+  RiInstagramLine,
+  RiLinkedinBoxFill,
   RiTwitterFill,
   RiYoutubeFill,
 } from 'react-icons/ri';
@@ -25,15 +25,15 @@ export interface SocialIconProps {
 
 const SocialIcon = ({
   platform,
-  size = 8,
+  size = 6,
   onClick,
   ...props
 }: SocialIconProps) => {
   const icons = {
-    [Social.FACEBOOK]: RiFacebookBoxFill,
+    [Social.FACEBOOK]: RiFacebookCircleFill,
     [Social.GITHUB]: RiGithubFill,
-    [Social.INSTAGRAM]: RiInstagramFill,
-    [Social.LINKEDIN]: RiLinkedinFill,
+    [Social.INSTAGRAM]: RiInstagramLine,
+    [Social.LINKEDIN]: RiLinkedinBoxFill,
     [Social.TWITTER]: RiTwitterFill,
     [Social.YOUTUBE]: RiYoutubeFill,
   };
@@ -43,6 +43,7 @@ const SocialIcon = ({
       <IconButton
         aria-label={`${platform}-link`}
         variant="ghost"
+        colorScheme="gray"
         icon={
           <Icon width={size} height={size} {...props} as={icons[platform]} />
         }

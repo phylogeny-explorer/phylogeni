@@ -1,4 +1,4 @@
-import Layout from '~/lib/layouts';
+import Layout from '~/lib/layouts/PublicLayout';
 
 type PublicLayoutProps = {
   children: React.ReactNode;

@@ -1,4 +1,10 @@
-import { Link, ListItem, OrderedList, Text } from '@chakra-ui/react';
+import {
+  Link,
+  ListItem,
+  OrderedList,
+  Text,
+  UnorderedList,
+} from '@chakra-ui/react';
 import type { LinkProps } from '@chakra-ui/react';
 import type { Options } from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
@@ -11,6 +17,11 @@ const components = {
     <OrderedList spacing={2} pl={4} mb={2}>
       {children}
     </OrderedList>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <UnorderedList spacing={2} pl={4} mb={2}>
+      {children}
+    </UnorderedList>
   ),
   li: ListItem,
   a: (props: LinkProps) => (

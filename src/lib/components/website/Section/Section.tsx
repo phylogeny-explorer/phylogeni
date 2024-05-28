@@ -20,12 +20,19 @@ type SectionProps = {
 
 const Section = ({ id, title, content, image, background }: SectionProps) => {
   const tealBackground = useColorModeValue('teal.50', 'teal.800');
-  const defaultBackground = useColorModeValue('gray.50', 'gray.800');
+  const defaultBackground = useColorModeValue(
+    'blackAlpha.50',
+    'blackAlpha.400'
+  );
 
   const isContact = id === 'contact';
 
   return (
-    <Grid id={id} width="full">
+    <Grid
+      id={id}
+      width="full"
+      background={background === 'teal' ? tealBackground : defaultBackground}
+    >
       {image && (
         <Image
           src={image}
@@ -44,12 +51,13 @@ const Section = ({ id, title, content, image, background }: SectionProps) => {
       )}
       <Grid
         width="full"
+        maxW={1200}
+        margin="0 auto"
         p={[8, 16]}
         gap={8}
         templateColumns={['unset', isContact ? '1fr 1fr' : '2fr 1fr']}
-        background={background === 'teal' ? tealBackground : defaultBackground}
       >
-        <Box>
+        <Box width="full" maxW={1200} margin="0 auto">
           <Heading fontSize={['4xl', '5xl']} fontWeight="normal" mb={4}>
             {title}
           </Heading>

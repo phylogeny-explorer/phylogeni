@@ -17,7 +17,7 @@ const Logo = ({ size = 10, full = false, onClick }: LogoProps) => {
   const showFullLogo = full && isLargeScreen;
 
   return showFullLogo ? (
-    <PEPLogoFull onClick={onClick} h={size} />
+    <PEPLogoFull onClick={onClick} h={size + 2} />
   ) : (
     <PEPLogo onClick={onClick} boxSize={size} />
   );
