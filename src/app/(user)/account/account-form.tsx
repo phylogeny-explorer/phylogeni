@@ -8,11 +8,10 @@ import {
   Input,
   Stack,
 } from '@chakra-ui/react';
-import type { User } from '@supabase/auth-helpers-nextjs';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 
-import type { Database } from '~/types/supabase';
+import { createClient } from '~/lib/utils/supabase/client';
 
 interface Props extends User {
   full_name?: string;
@@ -25,7 +24,7 @@ export default function AccountForm({
   full_name,
   avatar_url,
 }: Props) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [fullname, setFullname] = useState(full_name);
 
@@ -71,7 +70,7 @@ export default function AccountForm({
       </div>
 
       <div>
-        <form action="/auth/signout" method="post">
+        <form action="/api/auth/signout" method="post">
           <Button type="submit">Sign out</Button>
         </form>
       </div>

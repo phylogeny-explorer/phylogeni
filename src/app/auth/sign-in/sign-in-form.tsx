@@ -1,35 +1,54 @@
 'use client';
 
-import { Flex } from '@chakra-ui/react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
+import type { ButtonProps } from '@chakra-ui/react';
+import {
+  Button,
+  Divider,
+  FormControl,
+  FormLabel,
+  Input,
+  VStack,
+} from '@chakra-ui/react';
+import { useFormStatus, useFormState } from 'react-dom';
+import { FcGoogle } from 'react-icons/fc';
 
-import type { Database } from '~/types/supabase';
+import { signInWithOAuth, signInWithOtp } from './actions';
+
+const FormButton = (props: ButtonProps) => {
+  const { pending } = useFormStatus();
+  return <Button type="submit" isLoading={pending} {...props} />;
+};
 
 const SignInForm = () => {
-  const supabase = createClientComponentClient<Database>();
+  const [oauthState, oauthAction] = useFormState(signInWithOAuth, {
+    message: '',
+  });
+  const [otpState, otpAction] = useFormState(signInWithOtp, { message: '' });
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      minHeight="70vh"
-      gap={4}
-      mb={8}
-      w="full"
-    >
-      <Auth
-        supabaseClient={supabase}
-        view="magic_link"
-        appearance={{ theme: ThemeSupa }}
-        theme="dark"
-        showLinks={false}
-        providers={['google']}
-        redirectTo="http://localhost:3000/api/auth/callback"
-      />
-    </Flex>
+    <VStack spacing={4} align="flex-start">
+      <form action={oauthAction}>
+        <VStack spacing={4} align="flex-start">
+          <input type="hidden" name="provider" value="google" />
+          <FormButton colorScheme="gray" leftIcon={<FcGoogle size={24} />}>
+            Sign in with Google
+          </FormButton>
+          {oauthState.message && <p>{oauthState.message}</p>}
+        </VStack>
+      </form>
+      <Divider />
+      <form action={otpAction}>
+        <VStack spacing={4} align="flex-start">
+          <FormControl>
+            <FormLabel>Email address</FormLabel>
+            <Input id="email" name="email" type="email" required />
+          </FormControl>
+
+          <FormButton>Sign in with Magic Link</FormButton>
+          {otpState.message && <p>{otpState.message}</p>}
+        </VStack>
+      </form>
+    </VStack>
   );
 };
 

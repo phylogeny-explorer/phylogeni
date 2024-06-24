@@ -30,10 +30,11 @@ const Home = () => {
           Get Started
         </Button>
         <Text
-          fontSize="3xl"
+          fontSize={['xl', '3xl']}
           casing="uppercase"
           fontWeight={300}
           letterSpacing={2.5}
+          align="center"
         >
           Explore Evolution,{' '}
           <Text color="teal.500" as="span">

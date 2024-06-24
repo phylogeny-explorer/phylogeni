@@ -1,15 +1,12 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-
 import Layout from '~/lib/layouts/UserLayout';
-import type { Database } from '~/types/supabase';
+import { createClient } from '~/lib/utils/supabase/server';
 
 type UserLayoutProps = {
   children: React.ReactNode;
 };
 
 const UserLayout = async ({ children }: UserLayoutProps) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createClient();
 
   const {
     data: { user },

@@ -6,7 +6,7 @@ import Logo from '~/lib/components/Logo';
 import ThemeToggle from '~/lib/layouts/ThemeToggle';
 
 const Header = () => {
-  const backgroundColor = useColorModeValue('whiteAlpha.900', 'blackAlpha.900');
+  const backgroundColor = useColorModeValue('whiteAlpha.900', 'blackAlpha.800');
 
   return (
     <Grid

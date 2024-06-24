@@ -1,4 +1,4 @@
-import Layout from '~/lib/layouts/PublicLayout';
+import Layout from '~/lib/layouts/AuthLayout';
 
 type AuthLayoutProps = {
   children: React.ReactNode;
