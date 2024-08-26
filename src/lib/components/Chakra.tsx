@@ -1,16 +1,14 @@
-import {
-  ChakraProvider,
-  ColorModeScript,
-  cookieStorageManager,
-} from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { setCookie } from 'cookies-next';
 
 import customTheme from '~/lib/styles/theme/index';
 
 type ChakraProps = {
+  colorMode?: string;
   children: React.ReactNode;
 };
 
-export const Chakra = ({ children }: ChakraProps) => {
+export const Chakra = ({ colorMode, children }: ChakraProps) => {
   return (
     <>
       <ColorModeScript
@@ -18,7 +16,15 @@ export const Chakra = ({ children }: ChakraProps) => {
         type="cookie"
       />
       <ChakraProvider
-        colorModeManager={cookieStorageManager}
+        colorModeManager={{
+          type: 'cookie',
+          ssr: true,
+          get: (init) =>
+            colorMode || init || customTheme.config?.initialColorMode,
+          set: (value) => {
+            setCookie('chakra-ui-color-mode', value);
+          },
+        }}
         theme={customTheme}
       >
         {children}

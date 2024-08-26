@@ -47,7 +47,7 @@ export default function AccountForm({
   };
 
   return (
-    <Stack>
+    <Stack as="main" margin={8} marginY={22}>
       {avatar_url && <Avatar size="xl" src={avatar_url} name={full_name} />}
       <FormControl>
         <FormLabel>Email</FormLabel>

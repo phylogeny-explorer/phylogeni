@@ -10,6 +10,13 @@ const customTheme = extendTheme({
   colors,
   config,
   components,
+  styles: {
+    global: {
+      '.rd3t-g .rd3t-link': {
+        stroke: 'gray.300',
+      },
+    },
+  },
 });
 
 export default customTheme;

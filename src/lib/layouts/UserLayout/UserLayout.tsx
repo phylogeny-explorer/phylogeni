@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 import Header from './Header';
@@ -13,12 +13,10 @@ type UserLayoutProps = {
 
 const UserLayout = ({ profile, children }: UserLayoutProps) => {
   return (
-    <Box margin="8">
+    <Grid minH="100vh" autoRows="auto 1fr">
       <Header profile={profile} />
-      <Box as="main" marginY={22}>
-        {children}
-      </Box>
-    </Box>
+      {children}
+    </Grid>
   );
 };
 

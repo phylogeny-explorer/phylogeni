@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { cookies } from 'next/headers';
 
 import Providers from '~/app/providers';
 
@@ -37,10 +38,13 @@ export const viewport: Viewport = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => {
+  const cookiesList = cookies();
+  const colorMode = cookiesList.get('chakra-ui-color-mode');
+
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers colorMode={colorMode?.value}>{children}</Providers>
       </body>
     </html>
   );

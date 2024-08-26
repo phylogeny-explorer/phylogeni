@@ -4,10 +4,16 @@ import { CacheProvider } from '@chakra-ui/next-js';
 
 import { Chakra as ChakraProvider } from '~/lib/components/Chakra';
 
-const Providers = ({ children }: { children: React.ReactNode }) => {
+const Providers = ({
+  colorMode,
+  children,
+}: {
+  colorMode?: string;
+  children: React.ReactNode;
+}) => {
   return (
     <CacheProvider>
-      <ChakraProvider>{children}</ChakraProvider>
+      <ChakraProvider colorMode={colorMode}>{children}</ChakraProvider>
     </CacheProvider>
   );
 };

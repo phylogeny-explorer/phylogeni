@@ -1,16 +1,18 @@
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-
 import { createClient } from '~/lib/utils/supabase/server';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
   const supabase = createClient();
   const { searchParams } = new URL(req.url);
   const code = searchParams.get('code');
 
   if (code) {
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      const errorUrl = new URL('/auth/error', req.url);
+      errorUrl.searchParams.set('error', error.message);
+      return Response.redirect(errorUrl);
+    }
   }
 
-  return NextResponse.redirect(new URL('/account', req.url));
+  return Response.redirect(new URL('/tree', req.url));
 }
