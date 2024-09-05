@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Link,
   ListItem,
@@ -8,6 +10,7 @@ import {
 import type { LinkProps } from '@chakra-ui/react';
 import type { Options } from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 const components = {
   p: ({ children }: { children?: React.ReactNode }) => (
@@ -30,7 +33,9 @@ const components = {
 };
 
 const Markdown = ({ children }: Options) => (
-  <ReactMarkdown components={components}>{children}</ReactMarkdown>
+  <ReactMarkdown rehypePlugins={[rehypeRaw]} components={components}>
+    {children}
+  </ReactMarkdown>
 );
 
 export default Markdown;
