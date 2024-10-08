@@ -3,26 +3,9 @@ import type { Clade, Result } from '~/types/database';
 import client, { Vars, select, triple, like, greater, and } from './client';
 
 const queryByName = async (q: string) => {
-  const v = Vars(
-    'id',
-    'name',
-    'pattern',
-    'rank',
-    'extant',
-    'parent',
-    'dist',
-    'parent_name'
-  );
+  const v = Vars('id', 'name', 'pattern', 'rank', 'extant', 'dist');
 
-  const query = select(
-    v.id,
-    v.name,
-    v.rank,
-    v.extant,
-    v.parent,
-    v.dist,
-    v.parent_name
-  )
+  const query = select(v.id, v.name, v.rank, v.extant, v.dist)
     .order_by(v.dist, 'asc')
     .limit(10)
     .and(
@@ -42,8 +25,6 @@ const queryByName = async (q: string) => {
     name: item.name['@value'],
     rank: item.rank?.['@value'] || 'no rank',
     extant: item.extant?.split('/').pop(),
-    parent: item.parent?.split('/').pop(),
-    parentName: item.parent_name?.['@value'],
   }));
 };
 

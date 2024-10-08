@@ -13,4 +13,14 @@ client.db('phylogeny');
 
 export default client;
 
-export const { Vars, select, triple, like, greater, and } = TerminusClient.WOQL;
+export const {
+  Vars,
+  select,
+  triple,
+  like,
+  greater,
+  and,
+  string,
+  optional,
+  path,
+} = TerminusClient.WOQL;

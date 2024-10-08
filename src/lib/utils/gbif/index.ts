@@ -25,10 +25,19 @@ export const get = async (endpoint: string) => {
   return result.json();
 };
 
-export const getSpecies = async (id: string) => {
+export const getSpecies = async (id?: string) => {
+  if (!id) return null;
+
   const result: GbifSpecies = await get(`species/${id}`);
 
+  // console.log(result);
+
   const source = { id: uuidv4(), name: result.publishedIn };
+
+  if (!result.vernacularName && !result.authorship && !result.publishedIn) {
+    return null;
+  }
+
   return {
     canonicalName: result.canonicalName,
     authorship: result.authorship

@@ -48,14 +48,16 @@ const Page = async ({
           <Heading size="lg">Open Tree of Life results</Heading>
           {!openTreeResults.length && <Text>No results</Text>}
           {openTreeResults.map((item) => (
-            <Card key={item.id} size="sm">
-              <CardBody>
-                <Heading size="md">
-                  {item.extant ? '🌱' : '🦕'} {item.name}
-                </Heading>
-                <Text color="GrayText">{item.rank}</Text>
-              </CardBody>
-            </Card>
+            <Link key={item.id} href={`/node-details?ott_id=ott${item.id}`}>
+              <Card key={item.id} size="sm">
+                <CardBody>
+                  <Heading size="md">
+                    {item.extant ? '🌱' : '🦕'} {item.name}
+                  </Heading>
+                  <Text color="GrayText">{item.rank}</Text>
+                </CardBody>
+              </Card>
+            </Link>
           ))}
         </Stack>
       </Flex>

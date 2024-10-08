@@ -1,4 +1,4 @@
-import type { Taxon } from '~/types/ott';
+import type { Taxon, OttNodeDetails } from '~/types/ott';
 
 const baseUrl = 'https://api.opentreeoflife.org/v3/';
 
@@ -46,35 +46,87 @@ export const matchName = async (name: string) => {
 const ncbiLinkBase =
   'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=';
 
-type NodeResult = {
+type Node = {
   node_id: string;
+  extinct?: boolean;
   taxon?: Taxon;
-  lineage?: NodeResult[];
+  lineage?: Node[];
+  children?: Node[];
+  descendant_name_list?: string[];
 };
 
-export const getNodeDetails = async (ott_id: string) => {
-  const openTreeResult: NodeResult = await post('tree_of_life/node_info', {
-    node_id: ott_id,
-    include_lineage: true,
-  });
+type SubtreeResult = {
+  arguson: Node;
+};
 
-  if (!openTreeResult.taxon) {
-    return null;
-  }
+export const getNodeDetails = async (
+  ott_id?: string
+): Promise<OttNodeDetails | null> => {
+  if (!ott_id) return null;
 
-  const sources = openTreeResult.taxon.tax_sources.map((s) => {
+  const { arguson: openTreeResult }: SubtreeResult = await post(
+    'tree_of_life/subtree',
+    {
+      node_id: ott_id,
+      format: 'arguson',
+      height_limit: 1,
+    }
+  );
+
+  // console.log(openTreeResult);
+
+  const sources = openTreeResult.taxon?.tax_sources.map((s) => {
     const [name, id] = s.split(':');
     const link = name === 'ncbi' ? `${ncbiLinkBase}${id}` : null;
     return { name, id, link };
   });
 
+  const getName = (node: Node) =>
+    node.taxon?.name ||
+    node.descendant_name_list?.join(' + ') ||
+    'Unnamed Clade';
+
+  const mainRanks = [
+    'domain',
+    'kingdom',
+    'phylum',
+    'class',
+    'order',
+    'family',
+    'genus',
+  ];
+
   return {
     id: openTreeResult.node_id,
+    name: 'Unnamed Clade',
+    extinct: openTreeResult.extinct,
     ...openTreeResult.taxon,
-    parent: {
-      id: openTreeResult.lineage?.[0]?.node_id,
-      name: openTreeResult.lineage?.[0]?.taxon?.name || 'unnamed clade',
-    },
+    unique_name:
+      openTreeResult.taxon?.unique_name !== openTreeResult.taxon?.name
+        ? openTreeResult.taxon?.unique_name
+        : undefined,
+    lineage: openTreeResult.lineage
+      ?.filter(
+        (item) =>
+          item.node_id === openTreeResult.lineage?.[0]?.node_id ||
+          (item.taxon && mainRanks.includes(item.taxon.rank))
+      )
+      .map((item) => ({
+        id: item.node_id,
+        name: getName(item),
+        rank: item.taxon?.rank,
+      }))
+      .reverse(),
+    children: openTreeResult.children?.map((item) => ({
+      id: item.node_id,
+      name: getName(item),
+      extinct: item.extinct,
+      rank: item.taxon?.rank,
+    })),
+    // parent: {
+    //   id: openTreeResult.lineage?.[0]?.node_id || '',
+    //   name: openTreeResult.lineage?.[0]?.taxon?.name || 'unnamed clade',
+    // },
     sources,
   };
 };

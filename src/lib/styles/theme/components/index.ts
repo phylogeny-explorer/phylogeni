@@ -12,4 +12,9 @@ export const components = {
       focusBorderColor: 'teal.500',
     },
   },
+  Checkbox: {
+    defaultProps: {
+      colorScheme: 'teal',
+    },
+  },
 };

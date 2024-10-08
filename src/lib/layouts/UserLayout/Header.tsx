@@ -1,11 +1,11 @@
 import { Grid, Flex, useColorModeValue } from '@chakra-ui/react';
+import Link from 'next/link';
 
+import Logo from '~/lib/components/Logo';
 import ThemeToggle from '~/lib/layouts/ThemeToggle';
 
 import UserMenu from './UserMenu';
 import type { UserMenuProps } from './UserMenu';
-import Link from 'next/link';
-import Logo from '~/lib/components/Logo';
 
 export interface HeaderProps {
   profile: UserMenuProps;

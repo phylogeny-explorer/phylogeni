@@ -16,9 +16,29 @@ export type Clade = {
   rank?: XsdString;
   extant?: TrueFalse;
   parent?: string;
-  parent_name?: XsdString;
+  ott_id?: XsdString;
+  common_name?: XsdString;
 };
 
 export type Result<T> = {
   bindings: T[];
+};
+
+export type Node = {
+  id: string;
+  name: string;
+  commonNames?: string;
+  rank?: string;
+  extant?: string;
+  ott_id: string;
+};
+
+export type NodeDetails = Node & {
+  parent?: string;
+  parentName?: string;
+  sources?: {
+    name: string;
+    id: string;
+    link: string | null;
+  }[];
 };

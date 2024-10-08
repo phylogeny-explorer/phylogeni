@@ -8,45 +8,79 @@ import {
   ListItem,
   Stack,
   Text,
+  Divider,
 } from '@chakra-ui/react';
 
+import DescriptionList from '~/lib/components/DescriptionList';
 import Markdown from '~/lib/components/Markdown';
 import type { Species } from '~/types/gbif';
 
 // import MatchText from './MatchText';
 
-const GbifResultCard = ({ authorship, sources, commonNames }: Species) => {
+const GbifResultCard = ({
+  canonicalName,
+  authorship,
+  sources,
+  commonNames,
+}: Species) => {
   return (
     <Card>
       <CardBody>
         <Stack>
+          <DescriptionList
+            items={[
+              { key: 'Name', value: canonicalName },
+              { key: 'Common names', value: commonNames?.join(', ') },
+              {
+                key: 'Authorship',
+                value:
+                  authorship &&
+                  `${authorship?.name}, ${
+                    !authorship?.isOriginalAuthor ? '(' : ''
+                  }${authorship?.year}${!authorship?.isOriginalAuthor ? ')' : ''}`,
+              },
+            ]}
+          />
+
           {commonNames && <Text>Common names: {commonNames.join(', ')}</Text>}
-          <Heading size="sm">Authorship</Heading>
-          <Stack spacing={1} ml={4}>
-            <Text>Name: {authorship?.name}</Text>
 
-            {authorship?.year && <Text>Year: {authorship.year}</Text>}
+          {/* {authorship && (
+            <>
+              <Divider />
 
-            <Text>
-              Is original author: {authorship?.isOriginalAuthor ? 'yes' : 'no'}
-            </Text>
+              <Heading size="sm">Authorship</Heading>
+              <DescriptionList
+                items={[
+                  { key: 'Name', value: authorship.name },
+                  { key: 'Year', value: authorship.year?.toString() },
+                  {
+                    key: 'Is original author',
+                    value: authorship?.isOriginalAuthor ? 'Yes' : 'No',
+                  },
+                  {
+                    key: 'As string',
+                    value: `${authorship?.name}, ${
+                      !authorship?.isOriginalAuthor ? '(' : ''
+                    }${authorship?.year}${!authorship?.isOriginalAuthor ? ')' : ''}`,
+                  },
+                ]}
+              />
+            </>
+          )} */}
 
-            <Text>
-              Authorship as string: {authorship?.name},{' '}
-              {authorship?.isOriginalAuthor ? '(' : ''}
-              {authorship?.year}
-              {authorship?.isOriginalAuthor ? ')' : ''}
-            </Text>
-          </Stack>
-
-          <Heading size="sm">Sources</Heading>
-          <UnorderedList>
-            {sources?.map((source) => (
-              <ListItem key={source.id}>
-                <Markdown>{source.name}</Markdown>
-              </ListItem>
-            ))}
-          </UnorderedList>
+          {sources && (
+            <>
+              <Divider />
+              <Heading size="sm">Sources</Heading>
+              <UnorderedList ml={8}>
+                {sources?.map((source) => (
+                  <ListItem key={source.id}>
+                    <Markdown>{source.name}</Markdown>
+                  </ListItem>
+                ))}
+              </UnorderedList>
+            </>
+          )}
         </Stack>
       </CardBody>
     </Card>
