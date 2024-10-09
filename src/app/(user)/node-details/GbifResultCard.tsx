@@ -2,13 +2,11 @@
 
 import {
   Card,
-  CardBody,
   Heading,
-  UnorderedList,
-  ListItem,
+  List,
   Stack,
   Text,
-  Divider,
+  StackSeparator,
 } from '@chakra-ui/react';
 
 import DescriptionList from '~/lib/components/DescriptionList';
@@ -24,9 +22,9 @@ const GbifResultCard = ({
   commonNames,
 }: Species) => {
   return (
-    <Card>
-      <CardBody>
-        <Stack>
+    <Card.Root>
+      <Card.Body>
+        <Stack separator={<StackSeparator />}>
           <DescriptionList
             items={[
               { key: 'Name', value: canonicalName },
@@ -46,8 +44,6 @@ const GbifResultCard = ({
 
           {/* {authorship && (
             <>
-              <Divider />
-
               <Heading size="sm">Authorship</Heading>
               <DescriptionList
                 items={[
@@ -69,21 +65,20 @@ const GbifResultCard = ({
           )} */}
 
           {sources && (
-            <>
-              <Divider />
+            <div>
               <Heading size="sm">Sources</Heading>
-              <UnorderedList ml={8}>
+              <List.Root ml={8}>
                 {sources?.map((source) => (
-                  <ListItem key={source.id}>
+                  <List.Item key={source.id}>
                     <Markdown>{source.name}</Markdown>
-                  </ListItem>
+                  </List.Item>
                 ))}
-              </UnorderedList>
-            </>
+              </List.Root>
+            </div>
           )}
         </Stack>
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   );
 };
 

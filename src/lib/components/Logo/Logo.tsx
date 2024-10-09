@@ -1,5 +1,3 @@
-import { useMediaQuery } from '@chakra-ui/react';
-
 import PEPLogo from './PEPLogo';
 import PEPLogoFull from './PEPLogoFull';
 
@@ -10,16 +8,15 @@ export interface LogoProps {
 }
 
 const Logo = ({ size = 10, full = false, onClick }: LogoProps) => {
-  const [isLargeScreen] = useMediaQuery('(min-width: 600px)', {
-    ssr: true,
-    fallback: false,
-  });
-  const showFullLogo = full && isLargeScreen;
+  if (!full) {
+    return <PEPLogo onClick={onClick} boxSize={size} />;
+  }
 
-  return showFullLogo ? (
-    <PEPLogoFull onClick={onClick} h={size + 2} />
-  ) : (
-    <PEPLogo onClick={onClick} boxSize={size} />
+  return (
+    <>
+      <PEPLogoFull onClick={onClick} h={size + 2} hideBelow="md" />
+      <PEPLogo onClick={onClick} boxSize={size} hideFrom="md" />
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 import Footer from './Footer';
@@ -11,13 +11,12 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  const topColor = useColorModeValue('teal.50', 'teal.900');
-  const bottomColor = useColorModeValue('white', 'gray.900');
-
   return (
     <Box
       // h="min(100dvh, 100vh)"
-      bgGradient={`linear(to-b, ${topColor}, ${bottomColor})`}
+      bgGradient="to-b"
+      gradientFrom={{ base: 'teal.50', _dark: 'teal.900' }}
+      gradientTo={{ base: 'white', _dark: 'gray.900' }}
     >
       <Header />
       {children}

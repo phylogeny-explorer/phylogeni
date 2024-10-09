@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardBody,
-  Heading,
-  Stack,
-  Divider,
-  Link,
-} from '@chakra-ui/react';
+import { Card, Heading, Stack, StackSeparator, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import DescriptionList from '~/lib/components/DescriptionList';
@@ -28,9 +21,9 @@ const ResultCard = ({
   directChildren,
 }: Props) => {
   return (
-    <Card>
-      <CardBody>
-        <Stack>
+    <Card.Root>
+      <Card.Body>
+        <Stack separator={<StackSeparator />}>
           <DescriptionList
             items={[
               { key: 'Node ID', value: databaseResult.id },
@@ -64,8 +57,7 @@ const ResultCard = ({
           />
 
           {lineage?.length && (
-            <>
-              <Divider />
+            <div>
               <Heading size="sm">Lineage</Heading>
               <DescriptionList
                 items={lineage?.map((item) => ({
@@ -81,51 +73,56 @@ const ResultCard = ({
                   ),
                 }))}
               />
-            </>
+            </div>
           )}
 
-          <Divider />
-
-          <Heading size="sm">Children</Heading>
-          {directChildren && (
-            <DescriptionList
-              items={directChildren?.map((item, i) => ({
-                key: `${i + 1}`,
-                value: (
-                  <Link
-                    as={NextLink}
-                    href={`/node-details?id=${item.id}&ott_id=${item.ott_id}`}
-                  >
-                    {item.name}
-                  </Link>
-                ),
-              }))}
-            />
-          )}
-
-          <Divider />
-
-          <Heading size="sm">External Sources</Heading>
-          <DescriptionList
-            items={
-              databaseResult.sources?.map((source) => ({
-                key: source.name.toUpperCase(),
-                value: source.link ? (
-                  <>
-                    {source.id}{' '}
-                    <Link color="teal.500" href={source.link} isExternal>
-                      See more
+          <div>
+            <Heading size="sm">Children</Heading>
+            {directChildren && (
+              <DescriptionList
+                items={directChildren?.map((item, i) => ({
+                  key: `${i + 1}`,
+                  value: (
+                    <Link
+                      as={NextLink}
+                      href={`/node-details?id=${item.id}&ott_id=${item.ott_id}`}
+                    >
+                      {item.name}
                     </Link>
-                  </>
-                ) : (
-                  source.id
-                ),
-              })) || []
-            }
-          />
+                  ),
+                }))}
+              />
+            )}
+          </div>
+
+          <div>
+            <Heading size="sm">External Sources</Heading>
+            <DescriptionList
+              items={
+                databaseResult.sources?.map((source) => ({
+                  key: source.name.toUpperCase(),
+                  value: source.link ? (
+                    <>
+                      {source.id}{' '}
+                      <Link
+                        color="teal.500"
+                        href={source.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        See more
+                      </Link>
+                    </>
+                  ) : (
+                    source.id
+                  ),
+                })) || []
+              }
+            />
+          </div>
         </Stack>
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   );
 };
 

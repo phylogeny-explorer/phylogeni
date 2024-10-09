@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Heading,
   Image,
   Text,
@@ -9,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
+import { Button } from '~/components/ui/button';
 import MotionBox from '~/lib/components/motion/Box';
 
 const Page404 = () => {
@@ -28,7 +28,6 @@ const Page404 = () => {
       <Text textAlign="center" fontSize="xs" color="gray">
         <ChakraLink
           href="https://stories.freepik.com/web"
-          isExternal
           rel="noopener noreferrer"
         >
           Illustration by Freepik Stories
@@ -44,8 +43,8 @@ const Page404 = () => {
           <Text fontSize="sm" color="gray">
             It&apos;s Okay!
           </Text>
-          <Button as={Link} href="/" size="sm">
-            Let&apos;s Head Back
+          <Button asChild size="sm">
+            <Link href="/">Let&apos;s Head Back</Link>
           </Button>
         </Box>
       </Box>

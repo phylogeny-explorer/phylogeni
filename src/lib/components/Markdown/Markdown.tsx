@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  Link,
-  ListItem,
-  OrderedList,
-  Text,
-  UnorderedList,
-} from '@chakra-ui/react';
+import { Link, Text, List } from '@chakra-ui/react';
 import type { LinkProps } from '@chakra-ui/react';
 import type { Options } from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
@@ -17,18 +11,26 @@ const components = {
     <Text mb={2}>{children}</Text>
   ),
   ol: ({ children }: { children?: React.ReactNode }) => (
-    <OrderedList spacing={2} pl={4} mb={2}>
+    <List.Root as="ol" gap={2} pl={4} mb={2}>
       {children}
-    </OrderedList>
+    </List.Root>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <UnorderedList spacing={2} pl={4} mb={2}>
+    <List.Root gap={2} pl={4} mb={2}>
       {children}
-    </UnorderedList>
+    </List.Root>
   ),
-  li: ListItem,
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <List.Item>{children}</List.Item>
+  ),
   a: (props: LinkProps) => (
-    <Link {...props} isExternal color="teal.600" textDecoration="underline" />
+    <Link
+      {...props}
+      color="teal.600"
+      variant="underline"
+      target="_blank"
+      rel="noopener noreferrer"
+    />
   ),
 };
 

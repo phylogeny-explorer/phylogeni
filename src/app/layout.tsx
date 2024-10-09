@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import { cookies } from 'next/headers';
 
-import Providers from '~/app/providers';
+import ChakraProvider from '~/components/ui/provider';
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -38,13 +37,10 @@ export const viewport: Viewport = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => {
-  const cookiesList = cookies();
-  const colorMode = cookiesList.get('chakra-ui-color-mode');
-
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body>
-        <Providers colorMode={colorMode?.value}>{children}</Providers>
+        <ChakraProvider>{children}</ChakraProvider>
       </body>
     </html>
   );

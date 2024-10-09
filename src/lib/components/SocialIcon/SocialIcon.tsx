@@ -43,11 +43,10 @@ const SocialIcon = ({
       <IconButton
         aria-label={`${platform}-link`}
         variant="ghost"
-        colorScheme="gray"
-        icon={
-          <Icon width={size} height={size} {...props} as={icons[platform]} />
-        }
-      />
+        onClick={onClick}
+      >
+        <Icon width={size} height={size} {...props} as={icons[platform]} />
+      </IconButton>
     );
 
   return <Icon width={size} height={size} {...props} as={icons[platform]} />;

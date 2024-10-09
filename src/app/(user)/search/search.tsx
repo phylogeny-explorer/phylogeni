@@ -1,9 +1,11 @@
 'use client';
 
-import { Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
+import { Input, Text } from '@chakra-ui/react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { RiSearchLine } from 'react-icons/ri';
 import { useDebouncedCallback } from 'use-debounce';
+
+import { InputGroup } from '~/components/ui/input-group';
 
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
@@ -23,7 +25,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   return (
     <div>
       <Text mb="8px">Search by name</Text>
-      <InputGroup>
+      <InputGroup endElement={<RiSearchLine />}>
         <Input
           placeholder={placeholder}
           onChange={(e) => {
@@ -31,9 +33,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
           }}
           defaultValue={searchParams.get('q')?.toString()}
         />
-        <InputRightElement>
-          <RiSearchLine />
-        </InputRightElement>
       </InputGroup>
     </div>
   );

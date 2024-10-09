@@ -1,4 +1,4 @@
-import { Divider, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Heading, Stack, StackSeparator, Text } from '@chakra-ui/react';
 
 import getNodeChildren from '~/lib/utils/database/getNodeChildren';
 import getNodeDetails from '~/lib/utils/database/getNodeDetails';
@@ -44,15 +44,19 @@ const Page = async ({
   // console.log(lineage);
 
   return (
-    <Flex p={8} direction={['column', 'row']} gap={8}>
+    <Stack
+      p={8}
+      direction={['column', 'row']}
+      gap={8}
+      separator={<StackSeparator />}
+    >
       <NodeDetails
         databaseResult={result}
         lineage={lineage}
         directChildren={children}
         openTreeResult={openTreeResult}
       />
-      <Divider orientation="vertical" />
-      <Stack w="full" spacing={8}>
+      <Stack w="full" gap={8}>
         <Heading size="lg">Open Tree of Life result</Heading>
         {!openTreeResult && <Text>No result</Text>}
         {openTreeResult && (
@@ -65,7 +69,7 @@ const Page = async ({
         {!gbifResult && <Text>No result</Text>}
         {gbifResult && <GbifResultCard {...gbifResult} />}
       </Stack>
-    </Flex>
+    </Stack>
   );
 };
 

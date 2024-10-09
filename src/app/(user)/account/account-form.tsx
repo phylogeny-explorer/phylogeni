@@ -1,16 +1,12 @@
 'use client';
 
-import {
-  Avatar,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-} from '@chakra-ui/react';
+import { Input, Stack } from '@chakra-ui/react';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 
+import { Avatar } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
+import { Field } from '~/components/ui/field';
 import { createClient } from '~/lib/utils/supabase/client';
 
 interface Props extends User {
@@ -49,19 +45,17 @@ export default function AccountForm({
   return (
     <Stack as="main" margin={8} marginY={22}>
       {avatar_url && <Avatar size="xl" src={avatar_url} name={full_name} />}
-      <FormControl>
-        <FormLabel>Email</FormLabel>
+      <Field label="Email">
         <Input id="email" type="text" value={email} disabled />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Full Name</FormLabel>
+      </Field>
+      <Field label="Full name">
         <Input
           id="fullName"
           type="text"
           value={fullname || ''}
           onChange={(e) => setFullname(e.target.value)}
         />
-      </FormControl>
+      </Field>
 
       <div>
         <Button onClick={updateProfile} disabled={loading}>

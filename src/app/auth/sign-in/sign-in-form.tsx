@@ -1,22 +1,18 @@
 'use client';
 
 import type { ButtonProps } from '@chakra-ui/react';
-import {
-  Button,
-  Divider,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-} from '@chakra-ui/react';
+import { Input, StackSeparator, VStack } from '@chakra-ui/react';
 import { useFormStatus, useFormState } from 'react-dom';
 import { FcGoogle } from 'react-icons/fc';
+
+import { Button } from '~/components/ui/button';
+import { Field } from '~/components/ui/field';
 
 import { signInWithOAuth, signInWithOtp } from './actions';
 
 const FormButton = (props: ButtonProps) => {
   const { pending } = useFormStatus();
-  return <Button type="submit" isLoading={pending} {...props} />;
+  return <Button type="submit" loading={pending} {...props} />;
 };
 
 const SignInForm = () => {
@@ -26,23 +22,21 @@ const SignInForm = () => {
   const [otpState, otpAction] = useFormState(signInWithOtp, { message: '' });
 
   return (
-    <VStack spacing={4} align="flex-start">
+    <VStack gap={4} align="flex-start" separator={<StackSeparator />}>
       <form action={oauthAction}>
-        <VStack spacing={4} align="flex-start">
+        <VStack gap={4} align="flex-start">
           <input type="hidden" name="provider" value="google" />
-          <FormButton colorScheme="gray" leftIcon={<FcGoogle size={24} />}>
-            Sign in with Google
+          <FormButton colorPalette="gray">
+            <FcGoogle size={24} /> Sign in with Google
           </FormButton>
           {oauthState.message && <p>{oauthState.message}</p>}
         </VStack>
       </form>
-      <Divider />
       <form action={otpAction}>
-        <VStack spacing={4} align="flex-start">
-          <FormControl>
-            <FormLabel>Email address</FormLabel>
+        <VStack gap={4} align="flex-start">
+          <Field label="Email address">
             <Input id="email" name="email" type="email" required />
-          </FormControl>
+          </Field>
 
           <FormButton>Sign in with Magic Link</FormButton>
           {otpState.message && <p>{otpState.message}</p>}

@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 import Footer from '../PublicLayout/Footer';
@@ -11,10 +11,15 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  const background = useColorModeValue('gray.50', 'gray.900');
-
   return (
-    <Flex direction="column" h="min(100dvh, 100vh)" bg={background}>
+    <Flex
+      direction="column"
+      h="min(100dvh, 100vh)"
+      bg={{
+        base: 'gray.50',
+        _dark: 'gray.900',
+      }}
+    >
       <Header />
       <Flex
         direction="column"

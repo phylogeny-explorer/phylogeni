@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, Flex, Grid, Text } from '@chakra-ui/react';
+import { Flex, Grid, Text } from '@chakra-ui/react';
 
+import { Button } from '~/components/ui/button';
 import Carousel from '~/lib/components/Carousel';
 import Section from '~/lib/components/website/Section';
 
@@ -26,19 +27,16 @@ const Home = () => {
         margin="0 auto"
         justifyItems="center"
       >
-        <Button colorScheme="teal" size="lg">
-          Get Started
-        </Button>
+        <Button size="lg">Get Started</Button>
         <Text
           fontSize={['xl', '3xl']}
-          casing="uppercase"
           fontWeight={300}
           letterSpacing={2.5}
-          align="center"
+          textAlign="center"
         >
-          Explore Evolution,{' '}
+          EXPLORE EVOLUTION,{' '}
           <Text color="teal.500" as="span">
-            Discover Biodiversity
+            DISCOVER BIODIVERSITY
           </Text>
         </Text>
       </Grid>

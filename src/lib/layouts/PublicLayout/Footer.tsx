@@ -44,7 +44,7 @@ const Footer = () => {
         &#169; {new Date().getFullYear()} -{' '}
         <Link
           href="https://phylogenyexplorerproject.org"
-          isExternal
+          target="_blank"
           rel="noopener noreferrer"
         >
           Phylogeny Explorer Project

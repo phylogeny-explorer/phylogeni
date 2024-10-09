@@ -1,4 +1,4 @@
-import type { DeepPartial, Theme } from '@chakra-ui/react';
+import { defineTokens } from '@chakra-ui/react';
 import { Noto_Sans as FontBody } from 'next/font/google';
 
 export const fontBody = FontBody({
@@ -6,7 +6,11 @@ export const fontBody = FontBody({
   variable: '--font-body',
 });
 
-export const fonts: DeepPartial<Theme['fonts']> = {
-  heading: fontBody.style.fontFamily,
-  body: fontBody.style.fontFamily,
-};
+export const fonts = defineTokens.fonts({
+  heading: {
+    value: fontBody.style.fontFamily,
+  },
+  body: {
+    value: fontBody.style.fontFamily,
+  },
+});

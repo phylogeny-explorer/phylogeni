@@ -1,12 +1,7 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Heading,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Grid, Heading } from '@chakra-ui/react';
 import Image from 'next/image';
 
+import { Button } from '~/components/ui/button';
 import Markdown from '~/lib/components/Markdown';
 import Contact from '~/lib/components/website/Contact';
 
@@ -19,19 +14,16 @@ type SectionProps = {
 };
 
 const Section = ({ id, title, content, image, background }: SectionProps) => {
-  const tealBackground = useColorModeValue('teal.50', 'teal.800');
-  const defaultBackground = useColorModeValue(
-    'blackAlpha.50',
-    'blackAlpha.400'
-  );
-
   const isContact = id === 'contact';
 
   return (
     <Grid
       id={id}
       width="full"
-      background={background === 'teal' ? tealBackground : defaultBackground}
+      background={{
+        base: background === 'teal' ? 'teal.50' : 'blackAlpha.50',
+        _dark: background === 'teal' ? 'teal.800' : 'blackAlpha.800',
+      }}
     >
       {image && (
         <Image

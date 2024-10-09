@@ -1,25 +1,18 @@
-import {
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Stack,
-  Textarea,
-  useToast,
-} from '@chakra-ui/react';
+import { Input, Stack, Text, Textarea } from '@chakra-ui/react';
 import emailjs from '@emailjs/browser';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import * as Yup from 'yup';
+
+import { Button } from '~/components/ui/button';
+import { Field } from '~/components/ui/field';
+import { Toaster, toaster } from '~/components/ui/toaster';
 
 const SERVICE_ID = 'service_096y1mn';
 const TEMPLATE_ID = 'template_v1ctwus';
 const USER_ID = 'user_lBkWUG1XdnTeZWL2QnHi6';
 
 const Contact = () => {
-  const toast = useToast();
-
   const [error, setError] = useState('');
 
   const validationSchema = Yup.object({
@@ -34,10 +27,10 @@ const Contact = () => {
       emailjs
         .send(SERVICE_ID, TEMPLATE_ID, values, USER_ID)
         .then(() => {
-          toast({
+          toaster.create({
             title: 'Email sent',
             description: 'We will get back to you soon',
-            status: 'success',
+            type: 'success',
           });
           resetForm();
         })
@@ -48,9 +41,9 @@ const Contact = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing={4}>
-        <FormControl>
-          <FormLabel htmlFor="name">Name</FormLabel>
+      <Toaster />
+      <Stack gap={4}>
+        <Field label="Name">
           <Input
             id="name"
             name="name"
@@ -58,9 +51,8 @@ const Contact = () => {
             onChange={formik.handleChange}
             value={formik.values.name}
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+        </Field>
+        <Field label="Email">
           <Input
             id="email"
             name="email"
@@ -69,9 +61,8 @@ const Contact = () => {
             onChange={formik.handleChange}
             value={formik.values.email}
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="message">Message</FormLabel>
+        </Field>
+        <Field label="Message">
           <Textarea
             placeholder="Comments..."
             name="message"
@@ -79,11 +70,13 @@ const Contact = () => {
             value={formik.values.message}
             minH={200}
           />
-        </FormControl>
-        <Button type="submit" alignSelf="end" colorScheme="teal">
+        </Field>
+        <Button type="submit" alignSelf="end">
           Send
         </Button>
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
+        {error && (
+          <Text color={{ base: 'red.500', _dark: 'red.300' }}>{error}</Text>
+        )}
       </Stack>
     </form>
   );

@@ -21,4 +21,7 @@ module.exports = withPWA({
       value: process.env.NEXT_PUBLIC_APP_URL,
     },
   ],
+  experimental: {
+    optimizePackageImports: ['@chakra-ui/react'],
+  },
 });

@@ -1,4 +1,4 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import type { CustomNodeElementProps } from 'react-d3-tree';
 
@@ -35,14 +35,10 @@ const Node = ({
 
   const isRoot = id === rootId;
 
-  const parentFill = useColorModeValue('gray.50', 'gray.900');
-  const textStroke = useColorModeValue('white', 'gray.900');
-
   return (
-    <Box as="g" width={nodeSize.x} height={nodeSize.y} strokeWidth={2.5}>
+    <chakra.g width={nodeSize.x} height={nodeSize.y} strokeWidth={2.5}>
       {parent && isRoot && (
-        <Box
-          as="polygon"
+        <chakra.polygon
           points="5,5 -5,0 5,-5"
           fill="yellow.500"
           stroke="yellow.500"
@@ -50,28 +46,28 @@ const Node = ({
         />
       )}
       {id !== rootId && (
-        <Box
-          as="circle"
+        <chakra.circle
           r={5}
-          fill={hasChildren ? parentFill : 'teal.500'}
+          fill={{
+            base: hasChildren ? 'gray.50' : 'teal.500',
+            _dark: hasChildren ? 'gray.900' : 'teal.500',
+          }}
           stroke={hasChildren && !isRoot ? 'teal.500' : 'none'}
           onClick={onClickCircle}
         />
       )}
 
-      <Text
-        as="text"
+      <chakra.text
         dy="0.31em"
         x={12}
-        stroke={textStroke}
+        stroke={{ base: 'white', _dark: 'gray.900' }}
         strokeWidth={5}
         fontSize={14}
         fontWeight={500}
       >
         {nodeDatum.name}
-      </Text>
-      <Text
-        as="text"
+      </chakra.text>
+      <chakra.text
         dy="0.31em"
         x={12}
         fill={id === selectedNodeId ? 'teal.500' : 'currentColor'}
@@ -81,8 +77,8 @@ const Node = ({
         onClick={onNodeClick}
       >
         {nodeDatum.name}
-      </Text>
-    </Box>
+      </chakra.text>
+    </chakra.g>
   );
 };
 

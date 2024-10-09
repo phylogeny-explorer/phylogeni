@@ -1,4 +1,4 @@
-import { Grid, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Grid, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
 
 import Logo from '~/lib/components/Logo';
@@ -12,8 +12,6 @@ export interface HeaderProps {
 }
 
 const Header = ({ profile }: HeaderProps) => {
-  const backgroundColor = useColorModeValue('gray.100', 'blackAlpha.500');
-
   return (
     <Flex
       as="header"
@@ -21,7 +19,13 @@ const Header = ({ profile }: HeaderProps) => {
       align="center"
       padding={8}
       paddingY={4}
-      background={backgroundColor}
+      background={{
+        base: 'gray.100',
+        _dark: 'gray.900/40',
+      }}
+      position="sticky"
+      top={0}
+      zIndex={200}
     >
       <Link href="/tree">
         <Logo />
