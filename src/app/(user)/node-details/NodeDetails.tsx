@@ -18,7 +18,7 @@ import {
   NativeSelectRoot,
 } from '~/components/ui/native-select';
 import { SelectRoot, SelectContent, SelectItem } from '~/components/ui/select';
-import type { NodeDetails as Result, Node } from '~/types/database';
+import { Database } from '~/types/supabase';
 import type { OttNodeDetails } from '~/types/ott';
 
 import ResultCard from './ResultCard';
@@ -35,11 +35,13 @@ const ranks = createListCollection({
   ],
 });
 
+type Clade = Database['public']['Tables']['clades']['Row'];
+
 type Props = {
   openTreeResult?: OttNodeDetails | null;
-  databaseResult?: Result | null;
-  lineage?: Node[] | null;
-  directChildren?: Node[] | null;
+  databaseResult?: Clade | null;
+  lineage?: Clade[] | null;
+  directChildren?: Clade[] | null;
 };
 
 const NodeDetails = ({
@@ -69,17 +71,12 @@ const NodeDetails = ({
                 <Field label="Common name">
                   <Input
                     placeholder="Common name"
-                    defaultValue={databaseResult?.commonNames}
+                    defaultValue={databaseResult?.other_names || ''}
                   />
                 </Field>
 
                 <Field label="Rank">
-                  <SelectRoot
-                    collection={ranks}
-                    defaultValue={
-                      databaseResult?.rank ? [databaseResult.rank] : []
-                    }
-                  >
+                  <SelectRoot collection={ranks} defaultValue={[]}>
                     <SelectContent>
                       {ranks.items.map((item) => (
                         <SelectItem item={item} key={item.value}>
@@ -91,12 +88,14 @@ const NodeDetails = ({
                 </Field>
 
                 <Field label="Status">
-                  <RadioGroup defaultValue={databaseResult?.extant}>
+                  <RadioGroup
+                    defaultValue={databaseResult?.extant ? 'true' : 'false'}
+                  >
                     <Stack gap={5} direction="row">
-                      <Radio colorPalette="red" value="False">
+                      <Radio colorPalette="red" value="false">
                         Extinct
                       </Radio>
-                      <Radio colorPalette="green" value="True">
+                      <Radio colorPalette="green" value="true">
                         Extant
                       </Radio>
                     </Stack>
@@ -120,12 +119,12 @@ const NodeDetails = ({
                     </NativeSelectField>
                   </NativeSelectRoot>
                 </Field>
-                <Field label="ID">
+                {/* <Field label="ID">
                   <Input
                     placeholder="ID"
                     defaultValue={databaseResult?.ott_id}
                   />
-                </Field>
+                </Field> */}
               </Stack>
               <Button>Add</Button>
             </Stack>

@@ -47,6 +47,7 @@ export type Database = {
           avatar_url: string | null;
           full_name: string | null;
           id: string;
+          legacy_id: string | null;
           role: Database['public']['Enums']['role'] | null;
           updated_at: string | null;
           username: string | null;
@@ -55,6 +56,7 @@ export type Database = {
           avatar_url?: string | null;
           full_name?: string | null;
           id: string;
+          legacy_id?: string | null;
           role?: Database['public']['Enums']['role'] | null;
           updated_at?: string | null;
           username?: string | null;
@@ -63,6 +65,7 @@ export type Database = {
           avatar_url?: string | null;
           full_name?: string | null;
           id?: string;
+          legacy_id?: string | null;
           role?: Database['public']['Enums']['role'] | null;
           updated_at?: string | null;
           username?: string | null;
@@ -107,6 +110,87 @@ export type Database = {
           },
         ];
       };
+      transactions_old: {
+        Row: {
+          after: Json | null;
+          before: Json | null;
+          created: string | null;
+          id: string;
+          identifier: string | null;
+          mode: string | null;
+          status: string | null;
+          user: string | null;
+        };
+        Insert: {
+          after?: Json | null;
+          before?: Json | null;
+          created?: string | null;
+          id: string;
+          identifier?: string | null;
+          mode?: string | null;
+          status?: string | null;
+          user?: string | null;
+        };
+        Update: {
+          after?: Json | null;
+          before?: Json | null;
+          created?: string | null;
+          id?: string;
+          identifier?: string | null;
+          mode?: string | null;
+          status?: string | null;
+          user?: string | null;
+        };
+        Relationships: [];
+      };
+      users_old: {
+        Row: {
+          coverLetter: string | null;
+          created: string | null;
+          email: string | null;
+          firstName: string | null;
+          id: string;
+          isActive: boolean | null;
+          isConfirmed: boolean | null;
+          lastName: string | null;
+          modified: string | null;
+          role: string | null;
+          subscribed: boolean | null;
+          title: string | null;
+          username: string | null;
+        };
+        Insert: {
+          coverLetter?: string | null;
+          created?: string | null;
+          email?: string | null;
+          firstName?: string | null;
+          id: string;
+          isActive?: boolean | null;
+          isConfirmed?: boolean | null;
+          lastName?: string | null;
+          modified?: string | null;
+          role?: string | null;
+          subscribed?: boolean | null;
+          title?: string | null;
+          username?: string | null;
+        };
+        Update: {
+          coverLetter?: string | null;
+          created?: string | null;
+          email?: string | null;
+          firstName?: string | null;
+          id?: string;
+          isActive?: boolean | null;
+          isConfirmed?: boolean | null;
+          lastName?: string | null;
+          modified?: string | null;
+          role?: string | null;
+          subscribed?: boolean | null;
+          title?: string | null;
+          username?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -122,6 +206,12 @@ export type Database = {
           parent_id: number;
           level: number;
         }[];
+      };
+      get_clade_details: {
+        Args: {
+          clade_id: string;
+        };
+        Returns: Json;
       };
       get_clades_tree: {
         Args: {

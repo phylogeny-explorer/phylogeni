@@ -1,15 +1,12 @@
 import { Heading, Stack, StackSeparator, Text } from '@chakra-ui/react';
 
-// import getNodeChildren from '~/lib/utils/database/getNodeChildren';
-// import getNodeDetails from '~/lib/utils/database/getNodeDetails';
-// import getNodeLineage from '~/lib/utils/database/getNodeLineage';
-// import queryByOttId from '~/lib/utils/database/queryByOttId';
 import { getSpecies as getGbifData } from '~/lib/utils/gbif';
 import { getNodeDetails as getOttData } from '~/lib/utils/ott';
 
 import GbifResultCard from './GbifResultCard';
 import NodeDetails from './NodeDetails';
 import OttResultCard from './OttResultCard';
+import getCladeById from './getCladeById';
 
 const Page = async ({
   searchParams,
@@ -35,15 +32,14 @@ const Page = async ({
 
   // console.log(queryResults);
 
-  // const result = await getNodeDetails(id || queryResult?.id);
-  const result = null;
+  const result = id ? await getCladeById(id) : null;
   // console.log(result);
 
   // const children = result?.id ? await getNodeChildren(result.id) : null;
-  const children = null;
+  // const children = null;
 
   // const lineage = result?.id ? await getNodeLineage(result.id) : null;
-  const lineage = null;
+  // const lineage = null;
   // console.log(lineage);
 
   return (
@@ -55,8 +51,8 @@ const Page = async ({
     >
       <NodeDetails
         databaseResult={result}
-        lineage={lineage}
-        directChildren={children}
+        lineage={result?.lineage}
+        directChildren={result?.children}
         openTreeResult={openTreeResult}
       />
       <Stack w="full" gap={8}>

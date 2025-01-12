@@ -2,16 +2,18 @@ import { Card, Heading, Stack, StackSeparator, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import DescriptionList from '~/lib/components/DescriptionList';
-import type { NodeDetails, Node } from '~/types/database';
+import { Database } from '~/types/supabase';
 import type { OttNodeDetails } from '~/types/ott';
 
 import MatchText from './MatchText';
 
+type Clade = Database['public']['Tables']['clades']['Row'];
+
 type Props = {
   openTreeResult?: OttNodeDetails | null;
-  databaseResult: NodeDetails;
-  lineage?: Node[] | null;
-  directChildren?: Node[] | null;
+  databaseResult: Clade;
+  lineage?: Clade[] | null;
+  directChildren?: Clade[] | null;
 };
 
 const ResultCard = ({
@@ -20,6 +22,13 @@ const ResultCard = ({
   lineage,
   directChildren,
 }: Props) => {
+  console.log(
+    'ResultCard',
+    databaseResult,
+    openTreeResult,
+    lineage,
+    directChildren
+  );
   return (
     <Card.Root>
       <Card.Body>
@@ -35,14 +44,14 @@ const ResultCard = ({
                   </MatchText>
                 ),
               },
-              {
-                key: 'Rank',
-                value: databaseResult.rank && (
-                  <MatchText match={openTreeResult?.rank}>
-                    {databaseResult.rank}
-                  </MatchText>
-                ),
-              },
+              // {
+              //   key: 'Rank',
+              //   value: databaseResult.rank && (
+              //     <MatchText match={openTreeResult?.rank}>
+              //       {databaseResult.rank}
+              //     </MatchText>
+              //   ),
+              // },
               {
                 key: 'Status',
                 value: (
@@ -53,6 +62,17 @@ const ResultCard = ({
                   </MatchText>
                 ),
               },
+              {
+                key: 'Parent',
+                value: (
+                  <Link
+                    as={NextLink}
+                    href={`/node-details?id=${databaseResult.parent}`}
+                  >
+                    {lineage?.[0]?.name}
+                  </Link>
+                ),
+              },
             ]}
           />
 
@@ -60,18 +80,22 @@ const ResultCard = ({
             <div>
               <Heading size="sm">Lineage</Heading>
               <DescriptionList
-                items={lineage?.map((item) => ({
-                  key:
-                    !item.rank || item.rank === 'no rank' ? 'Clade' : item.rank,
-                  value: (
-                    <Link
-                      as={NextLink}
-                      href={`/node-details?id=${item.id}&ott_id=${item.ott_id}`}
-                    >
-                      {item.name}
-                    </Link>
-                  ),
-                }))}
+                items={lineage
+                  ?.toReversed()
+                  .filter(
+                    (item) =>
+                      !item.name.includes('Unnamed') &&
+                      !item.name.includes('+') &&
+                      !item.name.includes('-')
+                  )
+                  .map((item) => ({
+                    key: 'Clade',
+                    value: (
+                      <Link as={NextLink} href={`/node-details?id=${item.id}`}>
+                        {item.name}
+                      </Link>
+                    ),
+                  }))}
               />
             </div>
           )}
@@ -83,10 +107,7 @@ const ResultCard = ({
                 items={directChildren?.map((item, i) => ({
                   key: `${i + 1}`,
                   value: (
-                    <Link
-                      as={NextLink}
-                      href={`/node-details?id=${item.id}&ott_id=${item.ott_id}`}
-                    >
+                    <Link as={NextLink} href={`/node-details?id=${item.id}`}>
                       {item.name}
                     </Link>
                   ),
@@ -95,7 +116,7 @@ const ResultCard = ({
             )}
           </div>
 
-          <div>
+          {/* <div>
             <Heading size="sm">External Sources</Heading>
             <DescriptionList
               items={
@@ -119,7 +140,7 @@ const ResultCard = ({
                 })) || []
               }
             />
-          </div>
+          </div> */}
         </Stack>
       </Card.Body>
     </Card.Root>
