@@ -1,4 +1,4 @@
-import { NextConfig } from 'next';
+import type { NextConfig } from 'next/types';
 
 const nextConfig: NextConfig = {
   experimental: {

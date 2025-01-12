@@ -1,5 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-
 'use client';
 
 import type { ButtonProps, TextProps } from '@chakra-ui/react';
@@ -11,13 +9,12 @@ import {
   createContext,
   usePaginationContext,
 } from '@chakra-ui/react';
-import { forwardRef, useMemo } from 'react';
+import * as React from 'react';
 import {
   HiChevronLeft,
   HiChevronRight,
   HiMiniEllipsisHorizontal,
 } from 'react-icons/hi2';
-
 import { LinkButton } from './link-button';
 
 interface ButtonVariantMap {
@@ -51,24 +48,25 @@ const variantMap: Record<PaginationVariant, ButtonVariantMap> = {
   subtle: { default: 'ghost', ellipsis: 'plain', current: 'subtle' },
 };
 
-export const PaginationRoot = forwardRef<HTMLDivElement, PaginationRootProps>(
-  function PaginationRoot(props, ref) {
-    const { size = 'sm', variant = 'outline', getHref, ...rest } = props;
-    return (
-      <RootPropsProvider
-        value={{ size, variantMap: variantMap[variant], getHref }}
-      >
-        <ChakraPagination.Root
-          ref={ref}
-          type={getHref ? 'link' : 'button'}
-          {...rest}
-        />
-      </RootPropsProvider>
-    );
-  }
-);
+export const PaginationRoot = React.forwardRef<
+  HTMLDivElement,
+  PaginationRootProps
+>(function PaginationRoot(props, ref) {
+  const { size = 'sm', variant = 'outline', getHref, ...rest } = props;
+  return (
+    <RootPropsProvider
+      value={{ size, variantMap: variantMap[variant], getHref }}
+    >
+      <ChakraPagination.Root
+        ref={ref}
+        type={getHref ? 'link' : 'button'}
+        {...rest}
+      />
+    </RootPropsProvider>
+  );
+});
 
-export const PaginationEllipsis = forwardRef<
+export const PaginationEllipsis = React.forwardRef<
   HTMLDivElement,
   ChakraPagination.EllipsisProps
 >(function PaginationEllipsis(props, ref) {
@@ -82,7 +80,7 @@ export const PaginationEllipsis = forwardRef<
   );
 });
 
-export const PaginationItem = forwardRef<
+export const PaginationItem = React.forwardRef<
   HTMLButtonElement,
   ChakraPagination.ItemProps
 >(function PaginationItem(props, ref) {
@@ -109,7 +107,7 @@ export const PaginationItem = forwardRef<
   );
 });
 
-export const PaginationPrevTrigger = forwardRef<
+export const PaginationPrevTrigger = React.forwardRef<
   HTMLButtonElement,
   ChakraPagination.PrevTriggerProps
 >(function PaginationPrevTrigger(props, ref) {
@@ -137,7 +135,7 @@ export const PaginationPrevTrigger = forwardRef<
   );
 });
 
-export const PaginationNextTrigger = forwardRef<
+export const PaginationNextTrigger = React.forwardRef<
   HTMLButtonElement,
   ChakraPagination.NextTriggerProps
 >(function PaginationNextTrigger(props, ref) {
@@ -168,7 +166,7 @@ export const PaginationNextTrigger = forwardRef<
 export const PaginationItems = (props: React.HTMLAttributes<HTMLElement>) => {
   return (
     <ChakraPagination.Context>
-      {({ pages }: { pages: { type: string; value: number }[] }) =>
+      {({ pages }) =>
         pages.map((page, index) => {
           return page.type === 'ellipsis' ? (
             <PaginationEllipsis key={index} index={index} {...props} />
@@ -190,27 +188,21 @@ interface PageTextProps extends TextProps {
   format?: 'short' | 'compact' | 'long';
 }
 
-export const PaginationPageText = (props: PageTextProps) => {
+export const PaginationPageText = React.forwardRef<
+  HTMLParagraphElement,
+  PageTextProps
+>(function PaginationPageText(props, ref) {
   const { format = 'compact', ...rest } = props;
-
-  const { page, pages, pageRange, pageSize, totalPages } =
-    usePaginationContext();
-
-  const count = totalPages * pageSize;
-
-  const content = useMemo(() => {
-    if (format === 'short') {
-      return `${page} / ${pages.length}`;
-    }
-    if (format === 'compact') {
-      return `${page} of ${pages.length}`;
-    }
-    return `${pageRange.start + 1} - ${pageRange.end} of ${count}`;
-  }, [format, page, pages.length, pageRange, count]);
+  const { page, totalPages, pageRange, count } = usePaginationContext();
+  const content = React.useMemo(() => {
+    if (format === 'short') return `${page} / ${totalPages}`;
+    if (format === 'compact') return `${page} of ${totalPages}`;
+    return `${pageRange.start + 1} - ${Math.min(pageRange.end, count)} of ${count}`;
+  }, [format, page, totalPages, pageRange, count]);
 
   return (
-    <Text fontWeight="medium" {...rest}>
+    <Text fontWeight="medium" ref={ref} {...rest}>
       {content}
     </Text>
   );
-};
+});

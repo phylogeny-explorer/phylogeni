@@ -1,5 +1,5 @@
 import { Flex, Heading, Image, Link, Stack, Text } from '@chakra-ui/react';
-import type { Metadata } from 'next';
+import type { Metadata } from 'next/types';
 
 import BackButton from '~/lib/components/BackButton';
 import MotionBox from '~/lib/components/motion/Box';
