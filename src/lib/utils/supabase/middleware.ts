@@ -60,7 +60,7 @@ export async function updateSession(request: NextRequest) {
 
   // if user is signed in and the current path starts with auth redirect the user to /tree
   if (user && request.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/account', request.url));
+    return NextResponse.redirect(new URL('/tree', request.url));
   }
 
   // if user is not signed in and the current path is unprotected redirect the user to /auth/sign-in

@@ -60,5 +60,5 @@ export async function signInWithOtp(
     return { message: error.message };
   }
 
-  return { message: 'Success!' };
+  return { message: 'Success! Check your email.' };
 }

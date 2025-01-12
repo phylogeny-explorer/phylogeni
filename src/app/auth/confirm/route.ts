@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       redirectTo.pathname = '/auth/error';
       redirectTo.searchParams.set('error', error.message);
     } else {
-      redirectTo.pathname = '/account';
+      redirectTo.pathname = '/tree';
       redirectTo.searchParams.delete('next');
     }
   } else {
