@@ -14,25 +14,31 @@ import {
 } from '~/components/ui/drawer';
 import Markdown from '~/lib/components/Markdown';
 import { Stack, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 type Clade = Database['public']['Tables']['clades']['Row'];
 
-const CladeSidebar = ({ data }: { data: Clade | null }) => {
+const CladeSidebar = ({ data }: { data: Clade }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
 
-  console.log('CladeSidebar', data);
+  // console.log('CladeSidebar', data);
 
-  if (!data) return null;
+  const [date, setDate] = useState(
+    new Date(data.modified || data.created_at)?.toLocaleDateString('en-US')
+  );
+
+  useEffect(() => {
+    setDate(new Date(data.modified || data.created_at).toLocaleDateString());
+  }, [data]);
 
   return (
     <DrawerRoot
       open={!!searchParams.get('selected_node_id')}
       placement="start"
-      onOpenChange={(e) => {
-        console.log(e);
+      onOpenChange={() => {
         newSearchParams.delete('selected_node_id');
         router.push(`${pathname}?${newSearchParams.toString()}`);
       }}
@@ -67,10 +73,7 @@ const CladeSidebar = ({ data }: { data: Clade | null }) => {
           </Stack>
         </DrawerBody>
 
-        <DrawerFooter>
-          Last edited{' '}
-          {new Date(data.modified || data.created_at).toLocaleDateString()}
-        </DrawerFooter>
+        <DrawerFooter>Last edited {date}</DrawerFooter>
       </DrawerContent>
     </DrawerRoot>
   );

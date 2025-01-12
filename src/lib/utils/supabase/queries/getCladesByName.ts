@@ -1,12 +1,12 @@
 import { createClient } from '~/lib/utils/supabase/server';
 
-const queryByName = async (q: string) => {
+const getCladesByName = async (q: string) => {
   const supabase = await createClient();
 
   // find exact matches
   const { data: exactMatches, error: exactError } = await supabase
     .from('clades')
-    .select()
+    .select('id, name, extant')
     .ilike('name', q)
     .limit(10);
 
@@ -14,12 +14,12 @@ const queryByName = async (q: string) => {
     console.error('error', exactError);
     return [];
   }
-  console.log('exactMatches', exactMatches);
+  // console.log('exactMatches', exactMatches);
 
   // find partial matches
   const { data, error } = await supabase
     .from('clades')
-    .select()
+    .select('id, name, extant')
     .ilike('name', `%${q}%`)
     .limit(10);
 
@@ -41,4 +41,4 @@ const queryByName = async (q: string) => {
   return combinedResults;
 };
 
-export default queryByName;
+export default getCladesByName;

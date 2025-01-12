@@ -10,8 +10,8 @@ const DescriptionList = ({ items }: DescriptionListProps) => {
 
   return (
     <Stack as="dl" gap={1}>
-      {filteredItems.map(({ key, value }) => (
-        <Stack key={key} direction="row" gap={2}>
+      {filteredItems.map(({ key, value }, i) => (
+        <Stack key={`${key}-${i}`} direction="row" gap={2}>
           <Text
             as="dt"
             color={{ base: 'gray.800', _dark: 'gray.300' }}

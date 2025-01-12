@@ -14,10 +14,12 @@ import { Button } from '~/components/ui/button';
 import { Field } from '~/components/ui/field';
 import { Radio, RadioGroup } from '~/components/ui/radio';
 import {
-  NativeSelectField,
-  NativeSelectRoot,
-} from '~/components/ui/native-select';
-import { SelectRoot, SelectContent, SelectItem } from '~/components/ui/select';
+  SelectRoot,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValueText,
+} from '~/components/ui/select';
 import { Database } from '~/types/supabase';
 import type { OttNodeDetails } from '~/types/ott';
 
@@ -32,6 +34,13 @@ const ranks = createListCollection({
     { value: 'Order', label: 'Order' },
     { value: 'Class', label: 'Class' },
     { value: 'Phylum', label: 'Phylum' },
+  ],
+});
+
+const sources = createListCollection({
+  items: [
+    { value: 'OTT', label: 'OTT' },
+    { value: 'GBIF', label: 'GBIF' },
   ],
 });
 
@@ -61,7 +70,6 @@ const NodeDetails = ({
             <form>
               <Stack gap={4}>
                 <Field label="Name">
-                  ={' '}
                   <Input
                     placeholder="Name"
                     defaultValue={databaseResult?.name}
@@ -77,6 +85,9 @@ const NodeDetails = ({
 
                 <Field label="Rank">
                   <SelectRoot collection={ranks} defaultValue={[]}>
+                    <SelectTrigger>
+                      <SelectValueText placeholder="Select rank" />
+                    </SelectTrigger>
                     <SelectContent>
                       {ranks.items.map((item) => (
                         <SelectItem item={item} key={item.value}>
@@ -113,11 +124,18 @@ const NodeDetails = ({
             <Stack gap={4}>
               <Stack gap={2} direction="row">
                 <Field label="Source">
-                  <NativeSelectRoot>
-                    <NativeSelectField>
-                      <select>OTT</select>
-                    </NativeSelectField>
-                  </NativeSelectRoot>
+                  <SelectRoot collection={sources} defaultValue={[]}>
+                    <SelectTrigger>
+                      <SelectValueText placeholder="Select source" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {sources.items.map((item) => (
+                        <SelectItem item={item} key={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
                 </Field>
                 {/* <Field label="ID">
                   <Input

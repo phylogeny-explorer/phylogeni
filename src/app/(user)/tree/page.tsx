@@ -6,6 +6,10 @@ import Dendrogram from './dendrogram';
 import getTree from './getSubtree';
 import getClade from './getClade';
 
+export const metadata = {
+  title: 'Tree view',
+};
+
 export default async function TreePage({
   searchParams,
 }: {
@@ -27,7 +31,7 @@ export default async function TreePage({
       height="calc(100vh - 72px)"
       background={{ base: 'gray.50', _dark: 'gray.900' }}
     >
-      <CladeSidebar data={clade} />
+      {clade && <CladeSidebar data={clade} />}
       <Dendrogram data={data} />
     </Box>
   );

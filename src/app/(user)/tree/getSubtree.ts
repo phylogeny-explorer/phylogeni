@@ -21,13 +21,13 @@ const getSubtree = async (
     node_id: id,
     depth: 5,
   });
-  console.log(data, error);
+  // console.log(data, error);
 
   if (error) {
     console.error('error', error);
     return null;
   }
-  console.log('data', data);
+  // console.log('data', data);
 
   const item = data as Clade | null;
 

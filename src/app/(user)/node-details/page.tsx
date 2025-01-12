@@ -8,13 +8,17 @@ import NodeDetails from './NodeDetails';
 import OttResultCard from './OttResultCard';
 import getCladeById from './getCladeById';
 
+export const metadata = {
+  title: 'Node details',
+};
+
 const Page = async ({
   searchParams,
 }: {
   searchParams: Promise<{ id?: string; ott_id?: string }>;
 }) => {
   const { id, ott_id } = await searchParams;
-  console.log(id, ott_id);
+  // console.log(id, ott_id);
 
   const openTreeResult = await getOttData(ott_id);
 

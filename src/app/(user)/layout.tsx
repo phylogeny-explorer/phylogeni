@@ -1,5 +1,7 @@
-import Layout from '~/lib/layouts/UserLayout';
+import { Grid } from '@chakra-ui/react';
+
 import { createClient } from '~/lib/utils/supabase/server';
+import Header from './header';
 
 type UserLayoutProps = {
   children: React.ReactNode;
@@ -28,7 +30,12 @@ const UserLayout = async ({ children }: UserLayoutProps) => {
     avatar_url: data?.avatar_url || '',
   };
 
-  return <Layout profile={profile}>{children}</Layout>;
+  return (
+    <Grid autoRows="auto 1fr">
+      <Header profile={profile} />
+      {children}
+    </Grid>
+  );
 };
 
 export default UserLayout;

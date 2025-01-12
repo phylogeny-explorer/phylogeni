@@ -41,6 +41,7 @@ const Tree = ({ data, isVertical, onClickNode, selectedNodeId }: TreeProps) => {
   return (
     <Box id="treeWrapper" width="100%" height="100%" ref={containerRef}>
       <TreeComponent
+        key={data.id}
         zoomable
         data={data as RawNodeDatum}
         dimensions={dimensions}

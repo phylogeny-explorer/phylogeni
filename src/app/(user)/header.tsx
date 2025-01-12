@@ -2,10 +2,10 @@ import { Grid, Flex, IconButton } from '@chakra-ui/react';
 import Link from 'next/link';
 
 import Logo from '~/lib/components/Logo';
+import SearchBar from '~/lib/components/SearchBar';
 import { ColorModeButton } from '~/components/ui/color-mode';
 
-import UserMenu from './UserMenu';
-import type { UserMenuProps } from './UserMenu';
+import UserMenu, { type UserMenuProps } from './user-menu';
 
 export interface HeaderProps {
   profile: UserMenuProps;
@@ -19,9 +19,10 @@ const Header = ({ profile }: HeaderProps) => {
       align="center"
       padding={8}
       paddingY={4}
+      gap={4}
       background={{
-        base: 'gray.100',
-        _dark: 'gray.900/40',
+        base: 'gray.200',
+        _dark: 'gray.800',
       }}
       position="sticky"
       top={0}
@@ -33,7 +34,8 @@ const Header = ({ profile }: HeaderProps) => {
         </Link>
       </IconButton>
 
-      <Grid marginLeft="auto" gap={2} templateColumns="1fr auto">
+      <Grid marginLeft="auto" gap={2} templateColumns="1fr auto auto">
+        <SearchBar />
         <ColorModeButton />
         <UserMenu {...profile} />
       </Grid>

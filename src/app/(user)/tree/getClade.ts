@@ -12,13 +12,13 @@ const getClade = async (id?: string): Promise<Clade | null> => {
     .from('clades')
     .select('*')
     .eq('id', id);
-  console.log(data, error);
+  // console.log(data, error);
 
   if (error) {
     console.error('error', error);
     return null;
   }
-  console.log('data', data);
+  // console.log('data', data);
 
   const item = data[0];
 

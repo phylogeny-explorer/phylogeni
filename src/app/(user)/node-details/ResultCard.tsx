@@ -22,13 +22,6 @@ const ResultCard = ({
   lineage,
   directChildren,
 }: Props) => {
-  console.log(
-    'ResultCard',
-    databaseResult,
-    openTreeResult,
-    lineage,
-    directChildren
-  );
   return (
     <Card.Root>
       <Card.Body>

@@ -21,7 +21,7 @@ const getCladeById = async (id: string) => {
     return null;
   }
 
-  console.log('data', data);
+  // console.log('data', data);
 
   return data as CladeWithChildrenAndLineage | null;
 };

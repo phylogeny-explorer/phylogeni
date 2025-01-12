@@ -2,9 +2,13 @@ import { Card, Heading, Stack, StackSeparator, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
 import { matchName } from '~/lib/utils/ott';
+import getCladesByName from '~/lib/utils/supabase/queries/getCladesByName';
 
-import queryByName from './queryByName';
 import Search from './search';
+
+export const metadata = {
+  title: 'Advanced search',
+};
 
 const Page = async ({
   searchParams,
@@ -12,7 +16,7 @@ const Page = async ({
   searchParams: Promise<{ q: string }>;
 }) => {
   const { q } = await searchParams;
-  const results = await queryByName(q);
+  const results = await getCladesByName(q);
 
   const openTreeResults = await matchName(q);
 
