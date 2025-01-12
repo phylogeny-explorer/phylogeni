@@ -1,21 +1,23 @@
-import { Divider, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Heading, Stack, StackSeparator, Text } from '@chakra-ui/react';
 
-import getNodeChildren from '~/lib/utils/database/getNodeChildren';
-import getNodeDetails from '~/lib/utils/database/getNodeDetails';
-import getNodeLineage from '~/lib/utils/database/getNodeLineage';
-import queryByOttId from '~/lib/utils/database/queryByOttId';
 import { getSpecies as getGbifData } from '~/lib/utils/gbif';
 import { getNodeDetails as getOttData } from '~/lib/utils/ott';
 
 import GbifResultCard from './GbifResultCard';
 import NodeDetails from './NodeDetails';
 import OttResultCard from './OttResultCard';
+import getCladeById from './getCladeById';
+
+export const metadata = {
+  title: 'Node details',
+};
 
 const Page = async ({
-  searchParams: { id, ott_id },
+  searchParams,
 }: {
-  searchParams: { id?: string; ott_id?: string };
+  searchParams: Promise<{ id?: string; ott_id?: string }>;
 }) => {
+  const { id, ott_id } = await searchParams;
   // console.log(id, ott_id);
 
   const openTreeResult = await getOttData(ott_id);
@@ -30,29 +32,34 @@ const Page = async ({
 
   // console.log(gbifResult);
 
-  const queryResult = !id ? await queryByOttId(openTreeResult?.id) : null;
+  // const queryResult = !id ? await queryByOttId(openTreeResult?.id) : null;
 
   // console.log(queryResults);
 
-  const result = await getNodeDetails(id || queryResult?.id);
-
+  const result = id ? await getCladeById(id) : null;
   // console.log(result);
 
-  const children = result?.id ? await getNodeChildren(result.id) : null;
+  // const children = result?.id ? await getNodeChildren(result.id) : null;
+  // const children = null;
 
-  const lineage = result?.id ? await getNodeLineage(result.id) : null;
+  // const lineage = result?.id ? await getNodeLineage(result.id) : null;
+  // const lineage = null;
   // console.log(lineage);
 
   return (
-    <Flex p={8} direction={['column', 'row']} gap={8}>
+    <Stack
+      p={8}
+      direction={['column', 'row']}
+      gap={8}
+      separator={<StackSeparator />}
+    >
       <NodeDetails
         databaseResult={result}
-        lineage={lineage}
-        directChildren={children}
+        lineage={result?.lineage}
+        directChildren={result?.children}
         openTreeResult={openTreeResult}
       />
-      <Divider orientation="vertical" />
-      <Stack w="full" spacing={8}>
+      <Stack w="full" gap={8}>
         <Heading size="lg">Open Tree of Life result</Heading>
         {!openTreeResult && <Text>No result</Text>}
         {openTreeResult && (
@@ -65,7 +72,7 @@ const Page = async ({
         {!gbifResult && <Text>No result</Text>}
         {gbifResult && <GbifResultCard {...gbifResult} />}
       </Stack>
-    </Flex>
+    </Stack>
   );
 };
 

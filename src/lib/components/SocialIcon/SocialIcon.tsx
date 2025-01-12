@@ -1,4 +1,4 @@
-import { Icon, IconButton } from '@chakra-ui/react';
+import { Icon, IconButton, Link } from '@chakra-ui/react';
 import {
   RiFacebookCircleFill,
   RiGithubFill,
@@ -20,13 +20,13 @@ export enum Social {
 export interface SocialIconProps {
   platform: Social;
   size?: number;
-  onClick?: () => void;
+  href?: string;
 }
 
 const SocialIcon = ({
   platform,
   size = 6,
-  onClick,
+  href,
   ...props
 }: SocialIconProps) => {
   const icons = {
@@ -38,19 +38,28 @@ const SocialIcon = ({
     [Social.YOUTUBE]: RiYoutubeFill,
   };
 
-  if (onClick)
+  const PlatformIcon = icons[platform];
+
+  if (href)
     return (
-      <IconButton
-        aria-label={`${platform}-link`}
-        variant="ghost"
-        colorScheme="gray"
-        icon={
-          <Icon width={size} height={size} {...props} as={icons[platform]} />
-        }
-      />
+      <Link aria-label={`${platform}-link`} href={href} target="_blank" asChild>
+        <IconButton
+          variant="ghost"
+          color={{ base: 'teal.500', _dark: 'fg' }}
+          as="a"
+        >
+          <Icon width={size} height={size} {...props}>
+            <PlatformIcon />
+          </Icon>
+        </IconButton>
+      </Link>
     );
 
-  return <Icon width={size} height={size} {...props} as={icons[platform]} />;
+  return (
+    <Icon width={size} height={size} {...props}>
+      <PlatformIcon />
+    </Icon>
+  );
 };
 
 export default SocialIcon;

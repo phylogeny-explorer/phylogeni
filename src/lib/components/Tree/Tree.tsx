@@ -1,3 +1,5 @@
+'use client';
+
 import { Box } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import TreeComponent from 'react-d3-tree';
@@ -18,6 +20,11 @@ const Tree = ({ data, isVertical, onClickNode, selectedNodeId }: TreeProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [translate, setTranslate] = useState({ x: 200, y: 300 });
+  const [showTree, setShowTree] = useState(false);
+
+  useEffect(() => {
+    setShowTree(true);
+  }, []);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -25,13 +32,16 @@ const Tree = ({ data, isVertical, onClickNode, selectedNodeId }: TreeProps) => {
       setDimensions({ width, height });
       setTranslate({ x: width / 4, y: height / 2 });
     }
-  }, [containerRef]);
+  }, [containerRef, showTree]);
 
   const nodeSize = { x: 350, y: 24 };
+
+  if (!showTree) return null;
 
   return (
     <Box id="treeWrapper" width="100%" height="100%" ref={containerRef}>
       <TreeComponent
+        key={data.id}
         zoomable
         data={data as RawNodeDatum}
         dimensions={dimensions}
@@ -51,7 +61,7 @@ const Tree = ({ data, isVertical, onClickNode, selectedNodeId }: TreeProps) => {
             selectedNodeId={selectedNodeId}
           />
         )}
-        initialDepth={1}
+        initialDepth={2}
       />
     </Box>
   );

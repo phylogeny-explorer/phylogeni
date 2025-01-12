@@ -1,4 +1,4 @@
-import { Grid, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Grid, Heading } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import Markdown from '../Markdown';
@@ -18,8 +18,6 @@ const Slide = ({
   slideHeightDesktop,
   slideHeightMobile,
 }: Props) => {
-  const cardBackground = useColorModeValue('blackAlpha.50', 'blackAlpha.400');
-
   return (
     <Grid
       justifyContent="center"
@@ -42,7 +40,7 @@ const Slide = ({
           h="full"
           alignContent="start"
           gridArea="content"
-          bgColor={cardBackground}
+          bgColor={{ base: 'blackAlpha.50', _dark: 'blackAlpha.400' }}
           p={[4, 8]}
         >
           <Heading fontSize={['2xl', '3xl']}>{title}</Heading>

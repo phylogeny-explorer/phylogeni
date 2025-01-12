@@ -1,51 +1,30 @@
-import type { DeepPartial, Theme } from '@chakra-ui/react';
+import { defineTokens } from '@chakra-ui/react';
 
-/** extend additional color here */
-const extendedColors: DeepPartial<
-  Record<string, Theme['colors']['blackAlpha']>
-> = {
-  brand: {
-    100: '',
-    200: '',
-    300: '',
-    400: '',
-    500: '',
-    600: '',
-    700: '',
-    800: '',
-    900: '',
-  },
-};
-
-/** override chakra colors here */
-const overridenChakraColors: DeepPartial<Theme['colors']> = {
+export const colors = defineTokens.colors({
   gray: {
-    '50': '#F2F3F2',
-    '100': '#DADDDC',
-    '200': '#C1C7C5',
-    '300': '#A9B2AF',
-    '400': '#919C98',
-    '500': '#798682',
-    '600': '#616B68',
-    '700': '#49504E',
-    '800': '#303634',
-    '900': '#181B1A',
+    50: { value: '#F2F3F2' },
+    100: { value: '#DADDDC' },
+    200: { value: '#C1C7C5' },
+    300: { value: '#A9B2AF' },
+    400: { value: '#919C98' },
+    500: { value: '#798682' },
+    600: { value: '#616B68' },
+    700: { value: '#49504E' },
+    800: { value: '#303634' },
+    900: { value: '#181B1A' },
+    950: { value: '#0C0D0D' },
   },
   teal: {
-    '50': '#E9FBF6',
-    '100': '#C3F4E6',
-    '200': '#9CEDD6',
-    '300': '#75E6C6',
-    '400': '#4EDFB6',
-    '500': '#27D8A6',
-    '600': '#20AC84',
-    '700': '#188163',
-    '800': '#105642',
-    '900': '#082B21',
+    50: { value: '#f0fdfa' },
+    100: { value: '#ccfbf1' },
+    200: { value: '#99f6e4' },
+    300: { value: '#5eead4' },
+    400: { value: '#2dd4bf' },
+    500: { value: '#14b8a6' },
+    600: { value: '#0d9488' },
+    700: { value: '#0f766e' },
+    800: { value: '#115e59' },
+    900: { value: '#134e4a' },
+    950: { value: '#113c37' },
   },
-};
-
-export const colors = {
-  ...overridenChakraColors,
-  ...extendedColors,
-};
+});

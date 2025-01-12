@@ -1,31 +1,26 @@
 'use client';
 
-import {
-  Card,
-  CardBody,
-  Heading,
-  Stack,
-  Divider,
-  Link,
-} from '@chakra-ui/react';
+import { Card, Heading, Stack, Link, StackSeparator } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import DescriptionList from '~/lib/components/DescriptionList';
-import type { NodeDetails } from '~/types/database';
+import { Database } from '~/types/supabase';
 import type { OttNodeDetails } from '~/types/ott';
 
 import MatchText from './MatchText';
 
+type Clade = Database['public']['Tables']['clades']['Row'];
+
 type Props = {
   openTreeResult: OttNodeDetails;
-  databaseResult?: NodeDetails | null;
+  databaseResult?: Clade | null;
 };
 
 const OttResultCard = ({ databaseResult, openTreeResult }: Props) => {
   return (
-    <Card>
-      <CardBody>
-        <Stack>
+    <Card.Root>
+      <Card.Body>
+        <Stack separator={<StackSeparator />}>
           <DescriptionList
             items={[
               { key: 'Node ID', value: openTreeResult.id },
@@ -37,15 +32,16 @@ const OttResultCard = ({ databaseResult, openTreeResult }: Props) => {
                   </MatchText>
                 ),
               },
+              { key: 'Synonyms', value: openTreeResult.synonyms?.join(', ') },
               { key: 'Unique name', value: openTreeResult.unique_name },
-              {
-                key: 'Rank',
-                value: openTreeResult.rank && (
-                  <MatchText match={databaseResult?.rank}>
-                    {openTreeResult.rank}
-                  </MatchText>
-                ),
-              },
+              // {
+              //   key: 'Rank',
+              //   value: openTreeResult.rank && (
+              //     <MatchText match={databaseResult?.rank}>
+              //       {openTreeResult.rank}
+              //     </MatchText>
+              //   ),
+              // },
               {
                 key: 'Status',
                 value: (
@@ -60,8 +56,7 @@ const OttResultCard = ({ databaseResult, openTreeResult }: Props) => {
           />
 
           {openTreeResult.lineage?.length && (
-            <>
-              <Divider />
+            <div>
               <Heading size="sm">Lineage</Heading>
               <DescriptionList
                 items={openTreeResult.lineage?.map((item) => ({
@@ -77,48 +72,56 @@ const OttResultCard = ({ databaseResult, openTreeResult }: Props) => {
                   ),
                 }))}
               />
-            </>
+            </div>
           )}
 
-          <Divider />
-
-          <Heading size="sm">Children</Heading>
-          {openTreeResult.children && (
-            <DescriptionList
-              items={openTreeResult.children?.map((item, i) => ({
-                key: `${i + 1}`,
-                value: (
-                  <Link as={NextLink} href={`/node-details?ott_id=${item.id}`}>
-                    {item.name}
-                  </Link>
-                ),
-              }))}
-            />
-          )}
-
-          <Divider />
-
-          <Heading size="sm">External Sources</Heading>
-          <DescriptionList
-            items={
-              openTreeResult.sources?.map((source) => ({
-                key: source.name.toUpperCase(),
-                value: source.link ? (
-                  <>
-                    {source.id}{' '}
-                    <Link color="teal.500" href={source.link} isExternal>
-                      See more
+          <div>
+            <Heading size="sm">Children</Heading>
+            {openTreeResult.children && (
+              <DescriptionList
+                items={openTreeResult.children?.map((item, i) => ({
+                  key: `${i + 1}`,
+                  value: (
+                    <Link
+                      as={NextLink}
+                      href={`/node-details?ott_id=${item.id}`}
+                    >
+                      {item.name}
                     </Link>
-                  </>
-                ) : (
-                  source.id
-                ),
-              })) || []
-            }
-          />
+                  ),
+                }))}
+              />
+            )}
+          </div>
+
+          <div>
+            <Heading size="sm">External Sources</Heading>
+            <DescriptionList
+              items={
+                openTreeResult.sources?.map((source) => ({
+                  key: source.name.toUpperCase(),
+                  value: source.link ? (
+                    <>
+                      {source.id}{' '}
+                      <Link
+                        color="teal.500"
+                        href={source.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        See more
+                      </Link>
+                    </>
+                  ) : (
+                    source.id
+                  ),
+                })) || []
+              }
+            />
+          </div>
         </Stack>
-      </CardBody>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   );
 };
 

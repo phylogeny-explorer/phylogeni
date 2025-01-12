@@ -34,7 +34,7 @@ export const matchName = async (name: string) => {
   // console.log(matches);
 
   return matches
-    .filter((item) => !item.taxon.is_suppressed_from_synth)
+    .filter((item) => item.taxon.ott_id !== 805080)
     .map((item) => ({
       id: item.taxon.ott_id,
       name: item.taxon.name,
@@ -59,6 +59,18 @@ type SubtreeResult = {
   arguson: Node;
 };
 
+type TaxonInfoResult = {
+  flags?: string[];
+  synonyms?: string[];
+};
+
+const getName = (node: Node) => {
+  if (node.descendant_name_list) {
+    return `[${node.descendant_name_list.join(' + ')}]`;
+  }
+  return node.taxon?.name || 'Unnamed Clade';
+};
+
 export const getNodeDetails = async (
   ott_id?: string
 ): Promise<OttNodeDetails | null> => {
@@ -75,16 +87,24 @@ export const getNodeDetails = async (
 
   // console.log(openTreeResult);
 
+  if (!openTreeResult) return null;
+
   const sources = openTreeResult.taxon?.tax_sources.map((s) => {
     const [name, id] = s.split(':');
     const link = name === 'ncbi' ? `${ncbiLinkBase}${id}` : null;
     return { name, id, link };
   });
 
-  const getName = (node: Node) =>
-    node.taxon?.name ||
-    node.descendant_name_list?.join(' + ') ||
-    'Unnamed Clade';
+  let flags: string[] = [];
+  let synonyms: string[] = [];
+
+  if (openTreeResult.taxon) {
+    const result: TaxonInfoResult = await post('taxonomy/taxon_info', {
+      ott_id: openTreeResult.taxon.ott_id,
+    });
+    flags = result.flags || [];
+    synonyms = result.synonyms?.filter((s) => s.match(/^[a-zA-Z ]+$/)) || [];
+  }
 
   const mainRanks = [
     'domain',
@@ -98,8 +118,8 @@ export const getNodeDetails = async (
 
   return {
     id: openTreeResult.node_id,
-    name: 'Unnamed Clade',
-    extinct: openTreeResult.extinct,
+    name: getName(openTreeResult),
+    extinct: openTreeResult.extinct || flags.includes('extinct'),
     ...openTreeResult.taxon,
     unique_name:
       openTreeResult.taxon?.unique_name !== openTreeResult.taxon?.name
@@ -115,6 +135,7 @@ export const getNodeDetails = async (
         id: item.node_id,
         name: getName(item),
         rank: item.taxon?.rank,
+        extinct: item.extinct,
       }))
       .reverse(),
     children: openTreeResult.children?.map((item) => ({
@@ -128,5 +149,6 @@ export const getNodeDetails = async (
     //   name: openTreeResult.lineage?.[0]?.taxon?.name || 'unnamed clade',
     // },
     sources,
+    synonyms,
   };
 };

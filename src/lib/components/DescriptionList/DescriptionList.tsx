@@ -1,4 +1,4 @@
-import { Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 type DescriptionListProps = {
@@ -6,20 +6,18 @@ type DescriptionListProps = {
 };
 
 const DescriptionList = ({ items }: DescriptionListProps) => {
-  const textColor = useColorModeValue('gray.800', 'gray.300');
-
   const filteredItems = items.filter(({ value }) => value);
 
   return (
-    <Stack as="dl" spacing={1}>
-      {filteredItems.map(({ key, value }) => (
-        <Stack key={key} direction="row" spacing={2}>
+    <Stack as="dl" gap={1}>
+      {filteredItems.map(({ key, value }, i) => (
+        <Stack key={`${key}-${i}`} direction="row" gap={2}>
           <Text
             as="dt"
-            color={textColor}
+            color={{ base: 'gray.800', _dark: 'gray.300' }}
             w="109px"
             textAlign="end"
-            casing="capitalize"
+            textTransform="capitalize"
           >
             {key}:
           </Text>

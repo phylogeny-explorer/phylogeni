@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Flex, Grid } from '@chakra-ui/react';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useSwipeable } from 'react-swipeable';

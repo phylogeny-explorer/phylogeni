@@ -22,4 +22,5 @@ export type OttNodeDetails = {
     id: string;
     link: string | null;
   }[];
+  synonyms?: string[];
 };
