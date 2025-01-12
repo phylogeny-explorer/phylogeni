@@ -1,8 +1,8 @@
-import { Grid, Flex } from '@chakra-ui/react';
+import { Grid, Flex, IconButton } from '@chakra-ui/react';
 import Link from 'next/link';
 
 import Logo from '~/lib/components/Logo';
-import ThemeToggle from '~/lib/layouts/ThemeToggle';
+import { ColorModeButton } from '~/components/ui/color-mode';
 
 import UserMenu from './UserMenu';
 import type { UserMenuProps } from './UserMenu';
@@ -27,11 +27,14 @@ const Header = ({ profile }: HeaderProps) => {
       top={0}
       zIndex={200}
     >
-      <Link href="/tree">
-        <Logo />
-      </Link>
+      <IconButton asChild aria-label="logo" variant="plain">
+        <Link href="/tree">
+          <Logo />
+        </Link>
+      </IconButton>
+
       <Grid marginLeft="auto" gap={2} templateColumns="1fr auto">
-        <ThemeToggle />
+        <ColorModeButton />
         <UserMenu {...profile} />
       </Grid>
     </Flex>

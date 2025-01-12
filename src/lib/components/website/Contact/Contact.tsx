@@ -1,3 +1,5 @@
+'use client';
+
 import { Input, Stack, Text, Textarea } from '@chakra-ui/react';
 import emailjs from '@emailjs/browser';
 import { useFormik } from 'formik';

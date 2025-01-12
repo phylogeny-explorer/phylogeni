@@ -27,7 +27,7 @@ export enum Rank {
 
 type Attributes = {
   id: string;
-  leaves: number;
+  leaves?: number;
   hasChildren: boolean;
   extant: boolean;
   rank?: Rank;

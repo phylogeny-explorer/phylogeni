@@ -45,7 +45,10 @@ const Node = ({
           onClick={goToParent}
         />
       )}
-      {id !== rootId && (
+      {!parent && isRoot && (
+        <chakra.circle r={5} fill="yellow.500" stroke="yellow.500" />
+      )}
+      {!isRoot && (
         <chakra.circle
           r={5}
           fill={{

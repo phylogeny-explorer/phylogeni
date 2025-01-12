@@ -22,7 +22,7 @@ const Section = ({ id, title, content, image, background }: SectionProps) => {
       width="full"
       background={{
         base: background === 'teal' ? 'teal.50' : 'blackAlpha.50',
-        _dark: background === 'teal' ? 'teal.800' : 'blackAlpha.800',
+        _dark: background === 'teal' ? 'teal.800' : 'blackAlpha.700',
       }}
     >
       {image && (

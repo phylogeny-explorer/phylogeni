@@ -1,4 +1,9 @@
+import { IconButton } from '@chakra-ui/react';
+import Link from 'next/link';
+import { LuLogOut } from 'react-icons/lu';
+
 import { Avatar } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
 import {
   MenuContent,
   MenuItemGroup,
@@ -15,23 +20,35 @@ export interface UserMenuProps {
 }
 
 const UserMenu = ({ email, full_name, avatar_url }: UserMenuProps) => (
-  <MenuRoot>
-    <MenuTrigger>
-      <Avatar size="sm" src={avatar_url} name={full_name} />
+  <MenuRoot loopFocus>
+    <MenuTrigger asChild>
+      <IconButton aria-label="user menu" variant="ghost">
+        <Avatar size="sm" src={avatar_url} name={full_name} />
+      </IconButton>
     </MenuTrigger>
     <MenuContent>
       <MenuItemGroup title={full_name || email}>
-        <MenuItem as="a" href="/account">
-          Account
+        <MenuItem asChild value="account">
+          <Link href="/account">Account</Link>
         </MenuItem>
-        <MenuItem as="a" href="/settings">
-          Settings
+        <MenuItem asChild value="settings">
+          <Link href="/settings">Settings</Link>
         </MenuItem>
       </MenuItemGroup>
       <MenuSeparator />
-      <form action="/auth/signout" method="post">
-        <MenuItem type="submit">Sign out</MenuItem>
-      </form>
+      <MenuItem asChild value="signout">
+        <form action="/api/auth/signout" method="post">
+          <Button
+            type="submit"
+            variant="plain"
+            size="sm"
+            padding="0"
+            _focusVisible={{ outline: 'none' }}
+          >
+            <LuLogOut /> Sign out
+          </Button>
+        </form>
+      </MenuItem>
     </MenuContent>
   </MenuRoot>
 );

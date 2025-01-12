@@ -2,9 +2,9 @@
 
 import {
   Card,
+  createListCollection,
   Heading,
   Input,
-  SelectLabel,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -13,11 +13,27 @@ import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import { Field } from '~/components/ui/field';
 import { Radio, RadioGroup } from '~/components/ui/radio';
+import {
+  NativeSelectField,
+  NativeSelectRoot,
+} from '~/components/ui/native-select';
 import { SelectRoot, SelectContent, SelectItem } from '~/components/ui/select';
 import type { NodeDetails as Result, Node } from '~/types/database';
 import type { OttNodeDetails } from '~/types/ott';
 
 import ResultCard from './ResultCard';
+
+const ranks = createListCollection({
+  items: [
+    { value: 'No rank', label: 'No rank' },
+    { value: 'Species', label: 'Species' },
+    { value: 'Genus', label: 'Genus' },
+    { value: 'Family', label: 'Family' },
+    { value: 'Order', label: 'Order' },
+    { value: 'Class', label: 'Class' },
+    { value: 'Phylum', label: 'Phylum' },
+  ],
+});
 
 type Props = {
   openTreeResult?: OttNodeDetails | null;
@@ -58,15 +74,18 @@ const NodeDetails = ({
                 </Field>
 
                 <Field label="Rank">
-                  <SelectRoot defaultValue={databaseResult?.rank}>
+                  <SelectRoot
+                    collection={ranks}
+                    defaultValue={
+                      databaseResult?.rank ? [databaseResult.rank] : []
+                    }
+                  >
                     <SelectContent>
-                      <SelectItem>No rank</SelectItem>
-                      <SelectItem>Species</SelectItem>
-                      <SelectItem>Genus</SelectItem>
-                      <SelectItem>Family</SelectItem>
-                      <SelectItem>Order</SelectItem>
-                      <SelectItem>Class</SelectItem>
-                      <SelectItem>Phylum</SelectItem>
+                      {ranks.items.map((item) => (
+                        <SelectItem item={item} key={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </SelectRoot>
                 </Field>
@@ -94,13 +113,12 @@ const NodeDetails = ({
           <Card.Body>
             <Stack gap={4}>
               <Stack gap={2} direction="row">
-                <Field>
-                  <SelectRoot>
-                    <SelectLabel>Source</SelectLabel>
-                    <SelectContent>
-                      <SelectItem>OTT</SelectItem>
-                    </SelectContent>
-                  </SelectRoot>
+                <Field label="Source">
+                  <NativeSelectRoot>
+                    <NativeSelectField>
+                      <select>OTT</select>
+                    </NativeSelectField>
+                  </NativeSelectRoot>
                 </Field>
                 <Field label="ID">
                   <Input

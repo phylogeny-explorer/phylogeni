@@ -6,7 +6,7 @@ type UserLayoutProps = {
 };
 
 const UserLayout = async ({ children }: UserLayoutProps) => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

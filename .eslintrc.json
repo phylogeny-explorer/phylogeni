@@ -1,8 +1,4 @@
 {
-  "extends": [
-    "sznm/react",
-    "plugin:react/jsx-runtime",
-    "plugin:@next/next/recommended"
-  ],
+  "extends": ["next/core-web-vitals", "next/typescript"],
   "ignorePatterns": ["src/types/supabase.ts", "src/components/ui/*.tsx"]
 }

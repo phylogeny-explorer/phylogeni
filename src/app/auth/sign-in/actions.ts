@@ -10,8 +10,8 @@ export async function signInWithOAuth(
   _: { message: string },
   formData: FormData
 ) {
-  const host = headers().get('x-forwarded-host') || 'localhost:3000';
-  const supabase = createClient();
+  const host = (await headers()).get('x-forwarded-host') || 'localhost:3000';
+  const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -41,7 +41,7 @@ export async function signInWithOtp(
   _: { message: string },
   formData: FormData
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs

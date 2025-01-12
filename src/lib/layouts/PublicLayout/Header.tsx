@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { RiLoginBoxLine } from 'react-icons/ri';
 
 import { Button } from '~/components/ui/button';
+import { ColorModeButton } from '~/components/ui/color-mode';
 import Logo from '~/lib/components/Logo';
-import ThemeToggle from '~/lib/layouts/ThemeToggle';
 
 const Header = () => {
   return (
@@ -21,7 +21,7 @@ const Header = () => {
         gap={4}
         background={{
           base: 'whiteAlpha.900',
-          _dark: 'blackAlpha.800',
+          _dark: 'teal.950/90',
         }}
         borderRadius={16}
         alignItems="center"
@@ -40,7 +40,7 @@ const Header = () => {
               <RiLoginBoxLine /> Sign In
             </Button>
           </Link>
-          <ThemeToggle />
+          <ColorModeButton />
         </Grid>
       </Grid>
     </Grid>

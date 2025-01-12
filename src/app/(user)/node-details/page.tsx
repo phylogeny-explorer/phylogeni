@@ -1,9 +1,9 @@
 import { Heading, Stack, StackSeparator, Text } from '@chakra-ui/react';
 
-import getNodeChildren from '~/lib/utils/database/getNodeChildren';
-import getNodeDetails from '~/lib/utils/database/getNodeDetails';
-import getNodeLineage from '~/lib/utils/database/getNodeLineage';
-import queryByOttId from '~/lib/utils/database/queryByOttId';
+// import getNodeChildren from '~/lib/utils/database/getNodeChildren';
+// import getNodeDetails from '~/lib/utils/database/getNodeDetails';
+// import getNodeLineage from '~/lib/utils/database/getNodeLineage';
+// import queryByOttId from '~/lib/utils/database/queryByOttId';
 import { getSpecies as getGbifData } from '~/lib/utils/gbif';
 import { getNodeDetails as getOttData } from '~/lib/utils/ott';
 
@@ -12,11 +12,12 @@ import NodeDetails from './NodeDetails';
 import OttResultCard from './OttResultCard';
 
 const Page = async ({
-  searchParams: { id, ott_id },
+  searchParams,
 }: {
-  searchParams: { id?: string; ott_id?: string };
+  searchParams: Promise<{ id?: string; ott_id?: string }>;
 }) => {
-  // console.log(id, ott_id);
+  const { id, ott_id } = await searchParams;
+  console.log(id, ott_id);
 
   const openTreeResult = await getOttData(ott_id);
 
@@ -30,17 +31,19 @@ const Page = async ({
 
   // console.log(gbifResult);
 
-  const queryResult = !id ? await queryByOttId(openTreeResult?.id) : null;
+  // const queryResult = !id ? await queryByOttId(openTreeResult?.id) : null;
 
   // console.log(queryResults);
 
-  const result = await getNodeDetails(id || queryResult?.id);
-
+  // const result = await getNodeDetails(id || queryResult?.id);
+  const result = null;
   // console.log(result);
 
-  const children = result?.id ? await getNodeChildren(result.id) : null;
+  // const children = result?.id ? await getNodeChildren(result.id) : null;
+  const children = null;
 
-  const lineage = result?.id ? await getNodeLineage(result.id) : null;
+  // const lineage = result?.id ? await getNodeLineage(result.id) : null;
+  const lineage = null;
   // console.log(lineage);
 
   return (

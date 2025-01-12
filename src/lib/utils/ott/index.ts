@@ -34,7 +34,7 @@ export const matchName = async (name: string) => {
   // console.log(matches);
 
   return matches
-    .filter((item) => !item.taxon.is_suppressed_from_synth)
+    .filter((item) => item.taxon.ott_id !== 805080)
     .map((item) => ({
       id: item.taxon.ott_id,
       name: item.taxon.name,
@@ -86,6 +86,8 @@ export const getNodeDetails = async (
   );
 
   // console.log(openTreeResult);
+
+  if (!openTreeResult) return null;
 
   const sources = openTreeResult.taxon?.tax_sources.map((s) => {
     const [name, id] = s.split(':');

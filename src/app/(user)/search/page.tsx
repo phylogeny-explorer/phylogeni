@@ -1,16 +1,17 @@
 import { Card, Heading, Stack, StackSeparator, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
-import queryByName from '~/lib/utils/database/queryByName';
 import { matchName } from '~/lib/utils/ott';
 
+import queryByName from './queryByName';
 import Search from './search';
 
 const Page = async ({
-  searchParams: { q },
+  searchParams,
 }: {
-  searchParams: { q: string };
+  searchParams: Promise<{ q: string }>;
 }) => {
+  const { q } = await searchParams;
   const results = await queryByName(q);
 
   const openTreeResults = await matchName(q);
@@ -22,18 +23,19 @@ const Page = async ({
         direction={['column', 'row']}
         gap={8}
         separator={<StackSeparator />}
+        h="full"
       >
         <Stack w="full">
           <Heading size="lg">Database results</Heading>
           {!results.length && <Text>No results</Text>}
           {results.map((item) => (
             <Link key={item.id} href={`/node-details?id=${item.id}`}>
-              <Card.Root key={item.id} size="sm">
+              <Card.Root key={item.id} size="sm" w="full" variant="subtle">
                 <Card.Body>
                   <Heading size="md">
-                    {item.extant === 'True' ? '🌱' : '🦕'} {item.name}
+                    {item.extant ? '🌱' : '🦕'} {item.name}
                   </Heading>
-                  <Text color="GrayText">{item.rank}</Text>
+                  {/* <Text color="GrayText">{item.rank}</Text> */}
                 </Card.Body>
               </Card.Root>
             </Link>
@@ -44,7 +46,7 @@ const Page = async ({
           {!openTreeResults.length && <Text>No results</Text>}
           {openTreeResults.map((item) => (
             <Link key={item.id} href={`/node-details?ott_id=ott${item.id}`}>
-              <Card.Root key={item.id} size="sm">
+              <Card.Root key={item.id} size="sm" w="full" variant="subtle">
                 <Card.Body>
                   <Heading size="md">
                     {item.extant ? '🌱' : '🦕'} {item.name}

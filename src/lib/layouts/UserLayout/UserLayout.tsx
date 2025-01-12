@@ -13,7 +13,7 @@ type UserLayoutProps = {
 
 const UserLayout = ({ profile, children }: UserLayoutProps) => {
   return (
-    <Grid minH="100vh" autoRows="auto 1fr">
+    <Grid autoRows="auto 1fr">
       <Header profile={profile} />
       {children}
     </Grid>
