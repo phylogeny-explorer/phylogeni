@@ -68,7 +68,7 @@ const Node = ({
         fontSize={14}
         fontWeight={500}
       >
-        {nodeDatum.name}
+        {nodeDatum.name || 'Unnamed Clade'}
       </chakra.text>
       <chakra.text
         dy="0.31em"
@@ -79,7 +79,7 @@ const Node = ({
         fontWeight={500}
         onClick={onNodeClick}
       >
-        {nodeDatum.name}
+        {nodeDatum.name || 'Unnamed Clade'}
       </chakra.text>
     </chakra.g>
   );

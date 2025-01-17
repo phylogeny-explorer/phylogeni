@@ -3,17 +3,11 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Combobox, createListCollection } from '@ark-ui/react';
 import { useRouter } from 'next/navigation';
-import {
-  Center,
-  DialogTrigger,
-  Input,
-  Stack,
-  Text,
-  chakra,
-} from '@chakra-ui/react';
+import { Center, DialogTrigger, Input, Text, chakra } from '@chakra-ui/react';
 
 import { Database } from '~/types/supabase';
 import { DialogContent, DialogRoot } from 'components/ui/dialog';
+import { ComboboxItem } from './ComboboxItem';
 
 const ComboboxRoot = chakra(Combobox.Root, {
   base: {
@@ -25,21 +19,14 @@ const ComboboxRoot = chakra(Combobox.Root, {
 const ComboboxControl = chakra(Combobox.Control);
 const ComboboxInput = chakra(Combobox.Input, {}, { forwardAsChild: true });
 const ComboboxContent = chakra(Combobox.Content, {
-  base: {
-    borderRadius: 'md',
-  },
+  base: { borderRadius: 'md' },
 });
-const ComboboxList = chakra(Combobox.List);
-const ComboboxItem = chakra(Combobox.Item, {
+const ComboboxList = chakra(Combobox.List, { base: { h: '100%' } });
+const ComboboxItemGroup = chakra(Combobox.ItemGroup);
+const ComboboxItemGroupLabel = chakra(Combobox.ItemGroupLabel, {
   base: {
-    borderRadius: 'md',
-    _hover: {
-      bg: 'gray.subtle',
-      cursor: 'pointer',
-    },
-    _selected: {
-      bg: 'gray.subtle',
-    },
+    p: '2',
+    color: 'fg.subtle',
   },
 });
 
@@ -48,6 +35,34 @@ interface Item {
   value: string;
   category?: string | null;
 }
+
+const initialItems: Item[] = [
+  {
+    value: '579b68753431084e0fdc5430',
+    label: 'Homininae',
+    category: 'Great apes and humans',
+  },
+  {
+    value: '587eb692edafd34956b1dd1a',
+    label: 'Archosauria',
+    category: 'Dinosaurs, birds and crocodiles',
+  },
+  {
+    value: '57a8baf1343108933d3a8f36',
+    label: 'Felidae',
+    category: 'Cats',
+  },
+  {
+    value: '5878ebea365f536a716e2311',
+    label: 'Canidae',
+    category: 'Dogs',
+  },
+  {
+    value: '57af13b0343108290570722c',
+    label: 'Ursidae',
+    category: 'Bears',
+  },
+];
 
 interface Props {
   trigger: ReactNode;
@@ -71,7 +86,10 @@ export const CommandMenu = (props: Props) => {
       placement="center"
       motionPreset="slide-in-bottom"
       open={open}
-      onOpenChange={(event) => setOpen(event.open)}
+      onOpenChange={(event) => {
+        setOpen(event.open);
+        if (!event.open) reset();
+      }}
     >
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
       <DialogContent p="2" width={{ base: '100%', sm: 'lg' }}>
@@ -100,38 +118,34 @@ export const CommandMenu = (props: Props) => {
             px="0"
             py="0"
             overflow="auto"
-            maxH="50vh"
+            h="50vh"
             overscrollBehavior="contain"
           >
             <ComboboxList>
-              {loading && (
-                <Center p="3" minH="40">
+              {loading && results.length === 0 && (
+                <Center p="3" h="100%">
                   <Text color="fg.muted" textStyle="sm">
                     Loading...
                   </Text>
                 </Center>
               )}
-              {!loading && results.length === 0 && (
-                <Center p="3" minH="40">
+              {!loading && inputValue && results.length === 0 && (
+                <Center p="3" h="100%">
                   <Text color="fg.muted" textStyle="sm">
                     No results found for <Text as="strong">{inputValue}</Text>
                   </Text>
                 </Center>
               )}
+              {!inputValue && results.length === 0 && (
+                <ComboboxItemGroup>
+                  <ComboboxItemGroupLabel>Suggestions</ComboboxItemGroupLabel>
+                  {initialItems.map((item) => (
+                    <ComboboxItem key={item.value} item={item} />
+                  ))}
+                </ComboboxItemGroup>
+              )}
               {results.map((item) => (
-                <ComboboxItem
-                  key={item.value}
-                  item={item}
-                  persistFocus
-                  height="auto"
-                  px="4"
-                  py="3"
-                >
-                  <Stack gap="0">
-                    <Text fontWeight="medium">{item.label}</Text>
-                    <Text color="fg.muted">{item.category}</Text>
-                  </Stack>
-                </ComboboxItem>
+                <ComboboxItem key={item.value} item={item} />
               ))}
             </ComboboxList>
           </ComboboxContent>
@@ -169,6 +183,8 @@ const useSearchItems = (inputValue: string) => {
   useEffect(() => {
     if (inputValue) {
       fetchItems(inputValue);
+    } else {
+      setItems([]);
     }
   }, [inputValue]);
 

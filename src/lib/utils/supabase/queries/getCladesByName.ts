@@ -30,9 +30,9 @@ const getCladesByName = async (q: string) => {
 
   // combine results, exact matches first
   const combinedResults = [
-    ...exactMatches,
+    ...exactMatches.filter((item) => item.name),
     ...data.filter(
-      (item) => !exactMatches.some((exact) => exact.id === item.id)
+      (item) => item.name && !exactMatches.some((exact) => exact.id === item.id)
     ),
   ];
 
