@@ -56,10 +56,10 @@ export default async function Image() {
         <div
           style={{
             display: 'flex',
-            fontSize: 20,
+            fontSize: 30,
             fontStyle: 'normal',
             color: '#3f3f46',
-            marginTop: 10,
+            marginTop: 20,
             whiteSpace: 'pre-wrap',
             fontWeight: 500,
           }}
