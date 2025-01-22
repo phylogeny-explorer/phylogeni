@@ -9,7 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import type { User } from '@supabase/supabase-js';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toaster, Toaster } from '~/components/ui/toaster';
 import { Avatar } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
@@ -20,6 +20,7 @@ import { FileUploadRoot } from '~/components/ui/file-upload';
 import { HiUpload } from 'react-icons/hi';
 
 interface Props extends User {
+  id: string;
   full_name?: string;
   avatar_url?: string;
   updated_at?: string;
@@ -38,21 +39,42 @@ export default function AccountForm({
   const [lastUpdatedAt, setLastUpdatedAt] = useState(updated_at);
 
   const avatarRef = useRef<HTMLInputElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState(avatar_url);
+
+  useEffect(() => {
+    // convert the path to url
+    if (avatar_url) {
+      downloadAvatar(avatar_url).then((url) => setAvatarUrl(url));
+    }
+  }, [avatar_url, supabase]);
 
   const updateProfile = async () => {
     try {
       setLoading(true);
       const newUpdatedAt = new Date().toISOString();
+      setLastUpdatedAt(newUpdatedAt);
 
-      const files = avatarRef.current?.files;
-      if (files) {
-        console.log(files[0]);
+      let filePath;
+
+      if (avatarRef?.current?.files) {
+        const file = avatarRef?.current?.files[0];
+        const fileExt = file.name.split('.').pop();
+        filePath = `${id}-${Math.random()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, file);
+
+        if (uploadError) {
+          throw uploadError;
+        }
       }
 
       const { error } = await supabase.from('profiles').upsert({
         id: id as string,
         full_name: fullname,
         updated_at: newUpdatedAt,
+        avatar_url: filePath,
       });
 
       if (error) throw new Error(error.message);
@@ -155,7 +177,7 @@ export default function AccountForm({
             {avatar_url ? (
               <Avatar
                 size="xl"
-                src={avatar_url}
+                src={avatarUrl}
                 name={full_name}
                 width={'9rem'}
                 height={'9rem'}
@@ -190,7 +212,7 @@ export default function AccountForm({
               <FileUploadRoot accept={'image/*'} ref={avatarRef}>
                 <FileUploadTrigger asChild>
                   <Button id="AvatarFileUpload" variant="outline" size="sm">
-                    <HiUpload /> Upload file
+                    <HiUpload /> Upload image
                   </Button>
                 </FileUploadTrigger>
               </FileUploadRoot>
@@ -230,3 +252,24 @@ export default function AccountForm({
     </Stack>
   );
 }
+
+export const downloadAvatar = (path: string) => {
+  return new Promise<string>(async (resolve, reject) => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .download(path);
+      if (error) throw new Error(error.message);
+
+      if (data) {
+        const url = URL.createObjectURL(data);
+        resolve(url);
+      }
+      if (error) throw new Error('Failed to create object url');
+    } catch (error) {
+      console.log('Error downloading image: ', error);
+      reject(error);
+    }
+  });
+};
