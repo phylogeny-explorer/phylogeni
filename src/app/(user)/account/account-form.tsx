@@ -40,6 +40,7 @@ export default function AccountForm({
 
   const avatarRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState(avatar_url);
+  const [originalAvatarUrl] = useState(avatar_url);
 
   useEffect(() => {
     // convert the path to url
@@ -47,6 +48,20 @@ export default function AccountForm({
       downloadAvatar(avatar_url).then((url) => setAvatarUrl(url));
     }
   }, [avatar_url, supabase]);
+
+  const deleteAvatar = () => {
+    //if image has been changed within the current session
+    if (avatarRef.current?.files?.length) {
+      avatarRef.current.value = '';
+    }
+    setAvatarUrl('');
+  };
+
+  const updateImage = () => {
+    if (avatarRef.current?.files?.length) {
+      setAvatarUrl(URL.createObjectURL(avatarRef.current?.files[0]));
+    }
+  };
 
   const updateProfile = async () => {
     try {
@@ -56,7 +71,7 @@ export default function AccountForm({
 
       let filePath;
 
-      if (avatarRef?.current?.files) {
+      if (avatarRef.current?.files && avatarRef.current?.files?.length !== 0) {
         const file = avatarRef?.current?.files[0];
         const fileExt = file.name.split('.').pop();
         filePath = `${id}-${Math.random()}.${fileExt}`;
@@ -67,6 +82,17 @@ export default function AccountForm({
 
         if (uploadError) {
           throw uploadError;
+        }
+      } else {
+        if (originalAvatarUrl) {
+          const { data, error } = await supabase.storage
+            .from('avatars')
+            .remove([originalAvatarUrl]);
+
+          filePath = '';
+          console.log(data);
+
+          if (error) throw error;
         }
       }
 
@@ -204,12 +230,17 @@ export default function AccountForm({
               _hover={{ color: '#860111' }}
               background={'none'}
               color={'#c23b22'}
+              onClick={deleteAvatar}
             >
               Remove avatar
             </Button>
 
             <Box width={'max-content'}>
-              <FileUploadRoot accept={'image/*'} ref={avatarRef}>
+              <FileUploadRoot
+                accept={'image/*'}
+                ref={avatarRef}
+                onChange={updateImage}
+              >
                 <FileUploadTrigger asChild>
                   <Button id="AvatarFileUpload" variant="outline" size="sm">
                     <HiUpload /> Upload image
