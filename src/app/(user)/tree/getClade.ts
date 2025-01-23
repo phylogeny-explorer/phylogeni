@@ -1,6 +1,6 @@
 import { createClient } from '~/lib/utils/supabase/server';
+import findImagesByName from '~/lib/utils/wiki/findImagesByName';
 import { Database } from '~/types/supabase';
-import findImagesByName from './findImagesByName';
 
 type Clade = Database['public']['Tables']['clades']['Row'];
 type CladeWithImage = Clade & { image?: string };

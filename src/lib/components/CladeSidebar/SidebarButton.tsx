@@ -1,13 +1,13 @@
 'use client';
 
-import { Button, Center } from '@chakra-ui/react';
+import { Button, ButtonProps, Center } from '@chakra-ui/react';
 
-interface Props {
+interface Props extends Pick<ButtonProps, 'onClick'> {
   text: string;
   children: JSX.Element;
 }
 
-const SidebarButton = ({ text, children }: Props) => {
+const SidebarButton = ({ text, children, ...props }: Props) => {
   return (
     <Button
       variant="plain"
@@ -16,6 +16,7 @@ const SidebarButton = ({ text, children }: Props) => {
       h="unset"
       px={2}
       color="white"
+      {...props}
     >
       <Center
         bg="teal"

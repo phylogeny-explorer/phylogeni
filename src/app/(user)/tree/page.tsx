@@ -5,6 +5,7 @@ import CladeSidebar from '~/lib/components/CladeSidebar';
 import Dendrogram from './dendrogram';
 import getTree from './getSubtree';
 import getClade from './getClade';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Tree view',
@@ -18,7 +19,7 @@ export default async function TreePage({
   const { node_id, selected_node_id } = await searchParams;
   const data = await getTree(node_id);
 
-  const clade = selected_node_id ? await getClade(selected_node_id) : null;
+  const clade = selected_node_id ? getClade(selected_node_id) : null;
 
   if (!data) {
     return null;
@@ -31,7 +32,9 @@ export default async function TreePage({
       height="calc(100vh - 72px)"
       background={{ base: 'gray.50', _dark: 'gray.900' }}
     >
-      {clade && <CladeSidebar data={clade} />}
+      <Suspense fallback={<div>Loading...</div>}>
+        {clade && <CladeSidebar data={clade} />}
+      </Suspense>
       <Dendrogram data={data} />
     </Box>
   );

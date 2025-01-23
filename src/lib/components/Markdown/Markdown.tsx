@@ -5,6 +5,7 @@ import type { LinkProps } from '@chakra-ui/react';
 import type { Options } from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 const components = {
   p: ({ children }: { children?: React.ReactNode }) => (
@@ -35,7 +36,11 @@ const components = {
 };
 
 const Markdown = ({ children }: Options) => (
-  <ReactMarkdown rehypePlugins={[rehypeRaw]} components={components}>
+  <ReactMarkdown
+    rehypePlugins={[rehypeRaw]}
+    remarkPlugins={[remarkGfm]}
+    components={components}
+  >
     {children}
   </ReactMarkdown>
 );

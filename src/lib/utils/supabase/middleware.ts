@@ -72,5 +72,16 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/sign-in', request.url));
   }
 
+  // if (request.nextUrl.pathname.startsWith('/admin')) {
+  //   const { data: profile } = await supabase
+  //     .from('profiles')
+  //     .select()
+  //     .eq('id', user?.id || '')
+  //     .single();
+  //   if (profile.role !== 'admin') {
+  //     return NextResponse.redirect(new URL('/tree', request.url));
+  //   }
+  // }
+
   return response;
 }
