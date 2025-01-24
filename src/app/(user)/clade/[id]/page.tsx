@@ -29,7 +29,7 @@ export const metadata = {
   title: 'Clade info',
 };
 
-export default async function TreePage({
+export default async function CladePage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -94,7 +94,7 @@ export default async function TreePage({
 
       <Box pos="absolute" top="12" right="8" hideBelow="md">
         <InfoBox header={data.name} image={data.image}>
-          <Stack gap="2px">
+          <Stack gap="1">
             <NavLink href={`/tree?node_id=${data.id}`}>
               <Icon transform="rotate(-90deg)" h={5} w={5}>
                 <TbBinaryTree />
@@ -105,7 +105,7 @@ export default async function TreePage({
               <RiEdit2Fill size="1.4em" /> Edit
             </NavLink>
           </Stack>
-          <DataListRoot orientation="horizontal">
+          <DataListRoot orientation="horizontal" gap="2">
             <DataListItem label="Name" value={data.name} />
             <DataListItem
               label="Status"

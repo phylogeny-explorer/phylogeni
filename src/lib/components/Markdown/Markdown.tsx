@@ -27,6 +27,7 @@ const components = {
   a: (props: LinkProps) => (
     <Link
       {...props}
+      href={props.href || props.children?.toString()}
       color="teal.600"
       variant="underline"
       target="_blank"
