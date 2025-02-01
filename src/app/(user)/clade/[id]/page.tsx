@@ -106,7 +106,7 @@ export default async function CladePage({
               <RiEdit2Fill size="1.4em" /> Edit
             </NavLink>
             <NavLink href={`/clade/${data.id}/revisions`}>
-              <RiHistoryFill size="1.4em" /> Changelog
+              <RiHistoryFill size="1.4em" /> History
             </NavLink>
           </Stack>
           <DataListRoot orientation="horizontal" gap="2">
