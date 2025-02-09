@@ -1,11 +1,10 @@
-import { Box } from '@chakra-ui/react';
-
-import CladeSidebar from '~/lib/components/CladeSidebar';
-
-import Dendrogram from './dendrogram';
-import getTree from './getSubtree';
-import getClade from './getClade';
+import { Box, Flex } from '@chakra-ui/react';
 import { Suspense } from 'react';
+
+import getTree from './getSubtree';
+import Sidebar from './sidebar';
+import SidebarSkeleton from './sidebar-skeleton';
+import Dendrogram from './dendrogram';
 
 export const metadata = {
   title: 'Tree view',
@@ -19,8 +18,6 @@ export default async function TreePage({
   const { node_id, selected_node_id } = await searchParams;
   const data = await getTree(node_id);
 
-  const clade = selected_node_id ? getClade(selected_node_id) : null;
-
   if (!data) {
     return null;
   }
@@ -32,9 +29,22 @@ export default async function TreePage({
       height="calc(100vh - 72px)"
       background={{ base: 'gray.50', _dark: 'gray.900' }}
     >
-      <Suspense fallback={<div>Loading...</div>}>
-        {clade && <CladeSidebar data={clade} />}
-      </Suspense>
+      <Flex
+        direction="column"
+        pos="fixed"
+        height="calc(100vh - 72px)"
+        zIndex="modal"
+        bg="bg.panel"
+        boxShadow="lg"
+        maxW="xs"
+        data-state={selected_node_id ? 'open' : 'closed'}
+        _open={{ animation: 'slide-from-left 0.5s', w: '100%' }}
+        _closed={{ animation: 'slide-to-left 0.5s', w: '0' }}
+      >
+        <Suspense key={selected_node_id} fallback={<SidebarSkeleton />}>
+          <Sidebar nodeId={selected_node_id} />
+        </Suspense>
+      </Flex>
       <Dendrogram data={data} />
     </Box>
   );

@@ -1,13 +1,17 @@
 'use client';
 
-import { Button, ButtonProps, Center } from '@chakra-ui/react';
+import { Button, Center } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 
-interface Props extends Pick<ButtonProps, 'onClick'> {
+interface Props {
   text: string;
+  href: string;
   children: JSX.Element;
 }
 
-const SidebarButton = ({ text, children, ...props }: Props) => {
+const SidebarButton = ({ text, href, children }: Props) => {
+  const router = useRouter();
+
   return (
     <Button
       variant="plain"
@@ -16,7 +20,7 @@ const SidebarButton = ({ text, children, ...props }: Props) => {
       h="unset"
       px={2}
       color="white"
-      {...props}
+      onClick={() => router.push(href)}
     >
       <Center
         bg="teal"
