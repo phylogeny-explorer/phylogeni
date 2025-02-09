@@ -12,7 +12,7 @@ export const BreadcrumbRoot = forwardRef<HTMLDivElement, BreadcrumbRootProps>(
     const validChildren = Children.toArray(children).filter(isValidElement);
     return (
       <Breadcrumb.Root ref={ref} {...rest}>
-        <Breadcrumb.List gap={separatorGap}>
+        <Breadcrumb.List gap={separatorGap} flexWrap="wrap">
           {validChildren.map((child, index) => {
             const last = index === validChildren.length - 1;
             return (

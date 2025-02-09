@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 
-import ChakraProvider from '~/components/ui/provider';
+import { Provider as ChakraProvider } from '~/components/ui/provider';
 
 type RootLayoutProps = {
   children: React.ReactNode;

@@ -1,27 +1,27 @@
 import { Popover as ChakraPopover, Portal } from '@chakra-ui/react';
-import { forwardRef } from 'react';
-
 import { CloseButton } from './close-button';
+import * as React from 'react';
 
 interface PopoverContentProps extends ChakraPopover.ContentProps {
   portalled?: boolean;
   portalRef?: React.RefObject<HTMLElement>;
 }
 
-export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
-  function PopoverContent(props, ref) {
-    const { portalled = true, portalRef, ...rest } = props;
-    return (
-      <Portal disabled={!portalled} container={portalRef}>
-        <ChakraPopover.Positioner>
-          <ChakraPopover.Content ref={ref} {...rest} />
-        </ChakraPopover.Positioner>
-      </Portal>
-    );
-  }
-);
+export const PopoverContent = React.forwardRef<
+  HTMLDivElement,
+  PopoverContentProps
+>(function PopoverContent(props, ref) {
+  const { portalled = true, portalRef, ...rest } = props;
+  return (
+    <Portal disabled={!portalled} container={portalRef}>
+      <ChakraPopover.Positioner>
+        <ChakraPopover.Content ref={ref} {...rest} />
+      </ChakraPopover.Positioner>
+    </Portal>
+  );
+});
 
-export const PopoverArrow = forwardRef<
+export const PopoverArrow = React.forwardRef<
   HTMLDivElement,
   ChakraPopover.ArrowProps
 >(function PopoverArrow(props, ref) {
@@ -32,12 +32,19 @@ export const PopoverArrow = forwardRef<
   );
 });
 
-export const PopoverCloseTrigger = forwardRef<
+export const PopoverCloseTrigger = React.forwardRef<
   HTMLButtonElement,
   ChakraPopover.CloseTriggerProps
 >(function PopoverCloseTrigger(props, ref) {
   return (
-    <ChakraPopover.CloseTrigger {...props} asChild ref={ref}>
+    <ChakraPopover.CloseTrigger
+      position="absolute"
+      top="1"
+      insetEnd="1"
+      {...props}
+      asChild
+      ref={ref}
+    >
       <CloseButton size="sm" />
     </ChakraPopover.CloseTrigger>
   );

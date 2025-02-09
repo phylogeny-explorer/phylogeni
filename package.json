@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@ark-ui/react": "^4.8.0",
-    "@chakra-ui/react": "3.2.0",
+    "@chakra-ui/react": "3.5.0",
     "@emailjs/browser": "^4.3.3",
     "@emotion/react": "^11.13.3",
     "@supabase/ssr": "^0.3.0",
@@ -46,6 +46,7 @@
     "react-markdown": "^9.0.1",
     "react-swipeable": "^7.0.2",
     "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
     "use-debounce": "^10.0.3",
     "uuid": "^10.0.0",
     "yup": "^1.4.0"
